@@ -34,7 +34,7 @@ const sqlConfig = {
     },
   }
 async function startsql(id, pw) {
-    const sqlbeg = async function(resolve, reject) {
+    
         try{
             await sql.connect(sqlConfig);
             const result = await sql.query(`select * from Choice where SelectionID = ${id}`);
@@ -45,6 +45,7 @@ async function startsql(id, pw) {
             }else{
                 console.log(`${result['recordset'][0]['StudentID']} and ${id} are not match`);
             }   
+            console.log(`ttttttt${result}`)
             return new Promise(resolve => {
                 resolve(result);
                 console.log("sql query is finished");
@@ -52,9 +53,43 @@ async function startsql(id, pw) {
         }catch(err){
             console.log(`the error is ${err}`);
         }
-    }
+    
     //return Promise(sqlbeg);
 }
+async function startsql2(id, pw) {
+    
+        try{
+            await sql.connect(sqlConfig);
+            return result = await sql.query(`select * from Choice where SelectionID = ${id}`);
+        }catch(err){
+            console.log(`the error is ${err}`);
+        }
+    
+    //return Promise(sqlbeg);
+}
+/**
+function startsql(id, pw) {
+    return new Promise(resolve => {
+         try{
+            sql.connect(sqlConfig);
+            const result = sql.query(`select * from Choice where SelectionID = ${id}`);
+            console.log(`result is ${result}`);
+            console.dir(result);   
+            if(result['recordset'][0]['StudentID'] == pw){
+                console.log(`${result['recordset'][0]['StudentID']} and ${id} the things match`);
+            }else{
+                console.log(`${result['recordset'][0]['StudentID']} and ${id} are not match`);
+            }   
+            
+            resolve(result);
+            console.log("sql query is finished");
+            
+        }catch(err){
+            console.log(`the error is ${err}`);
+        }
+    }) 
+}**/
+
 
 console.log("(THEN) now start running the then function");
 sql.connect(sqlConfig).then(function(){
@@ -76,16 +111,23 @@ app.post('/auth', function(request, response) {
 	let password = request.body.password;
 	// Ensure the input fields exists and are not empty
 	if (username && password) {
-        const result = async function() {
-            //const result = await startsql(username, password);
-            Promise(startsql()).then((result) => {
-                console.log(`____result____${result}`);
-                if(result == password){
-                    console.log(`welcome in ${password}`);
-                }
-            });
-        };
-        result();
+        (async() => {
+            const result = await startsql2(username, password);
+            console.log(`____result____12${result}`);
+            if(result == password){
+                console.log(`welcome in ${password}`);
+            }
+        })()
+        startsql(username, password).then(result => {
+            console.log(`____result____34${result}`);
+            console.dir(result)
+            if(result['recordset'][0]['StudentID'] == password){
+                console.log(`welcome in ${password}`);
+            }else{
+                console.log(`you are not ${username}`)
+            }
+        })
+        
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();

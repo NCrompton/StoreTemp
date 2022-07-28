@@ -1,0 +1,44 @@
+<head>
+    <title>Test Site</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    <link rel="stylesheet" type="text/css" href=" {% static 'polls/button.css' %}">
+    <include src="./header.html" />
+</head>
+{% if latest_question_list %}
+<h1>Catalog of all questions</h1>
+<div class="list_question">
+    <div class="div-1">
+        <ul id = "questions">
+        {% for question in latest_question_list %}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="div-2">
+        <p>Hello this is a text</p>
+        <button class="b1">HIHI</button>
+    </div>
+    <div class="div-3">
+        <table class="table-test">
+            <thead>
+                <td width="33%">number 1</td>
+                <td>number 1</td>
+                <td>number 1</td>
+            </thead>
+            {% for question in latest_question_list %}
+                <tr>{% for choice in question.choice_set.all %}{{choice.choice_text}}{% endfor %}</tr>
+            {% endfor %}
+        </table>    
+    </div>
+</div>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+<div class="div2">
+    <a href={% url 'polls:add' %}>
+    <button class="button1"><span> to icon </span></button>
+    </a>
+</div>

@@ -1,0 +1,36 @@
+{% extends "./base.html" %}
+{% block header %}
+<head>
+    {%load static%}
+    <include src="./header.html" />
+    <iframe src="https://www.wikipedia.com" class="mx-auto w-auto"></iframe>
+</head>
+{% endblock %}
+
+{% block body %}
+<div class="add_question">
+<h1>Question Control</h1>
+{% if changed_question %}
+<Strong>The new entry {{changed_question.question_text }}</strong>
+<br><h2 class="justify-center">Do you want to add a new Question?</h2>
+{% endif %}
+<form class="px-3 py-3 mt-2 group" action="{% url 'polls:add' %}" method="post">
+    {% csrf_token %}
+    
+        <legend><h1 class="shadow"> Add new question </h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <div class=" group-hover:visible">
+            <label for="choice" class="text-1xl ">What's the question: 
+                <input type="text" name="name" id="name" placeholder="question name" 
+                    class="focus:outline-none placeholder:italic placeholder:text-slate-400 rounded-md border 
+                    bg-gray-100 mt-5 hover:bg-gray-50">
+            </label>
+            </br>
+        
+            <input type="submit" value="Add" class="rounded-md border bg-blue-100 
+                hover:bg-blue-300 item-center px-5 py-2 my-5 mx-6 
+                " ></input>
+        </div>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+.button1 {
+    border-radius: 4px;
+    background-color: #7777cc;
+    color: white;
+    transition: all 0.6s;
+    border: none;
+    padding: 10px;
+    margin-top: 20px;
+    width: 200px;
+}
+
+.button1 span{
+    transition: 0.3s;
+    display: inline-block;
+    position: relative;
+}
+
+.button1 span:after{
+    content: '\00bb';
+    transition: 0.5s;
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    top: 0;
+}
+
+.button1:hover {
+    background-color:#4444cc;
+    color: #ffffff
+}
+
+.button1:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.button1:hover span{
+    padding-right: 25px;
+}
+
+.button1 span {
+    cursor: pointer;
+    display: inline-block;
+}

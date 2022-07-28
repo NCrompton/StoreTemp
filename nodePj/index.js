@@ -29,7 +29,7 @@ function testfun(){
 	rate.forEach(num => {
 		console.log(num)
 	})
-	plot.plotgraph()
+	plot.plotgraph(rate);
 	var r1 = rate.map(s => s)
 	console.log(r1);
 	var r2 = rate.map(function (s) {return s})

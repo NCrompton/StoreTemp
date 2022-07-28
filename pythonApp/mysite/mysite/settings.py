@@ -124,3 +124,16 @@ STATICFILES_DIRS =  [BASE_DIR / 'static',]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+"""DATABASES = {
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "pms2",
+        "USER": "pms",
+        "PASSWORD": "pms1234",
+        "HOST": "wt9.cs.cityu.edu.hk",
+        "PORT": "1433",
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+        },
+    },
+}"""
+

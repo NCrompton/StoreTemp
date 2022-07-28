@@ -10,8 +10,8 @@ const plotdata = [
 
 module.exports = {
     
-    plotgraph: function () {
-        plot.plot(plotdata);
+    plotgraph: function (plotdatai) {
+        plot.plot(plotdatai);
         console.log("plotting the graph")
     }
 

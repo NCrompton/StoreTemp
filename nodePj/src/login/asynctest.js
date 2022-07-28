@@ -2,7 +2,8 @@ function resolveAfter2Seconds() {
     console.log("starting slow promise")
     return new Promise(resolve => {
       setTimeout(function() {
-        resolve("slow")
+        var txt = ['2', 'd', '3'];
+        resolve(txt)
         console.log("slow promise is done")
       }, 2000)
     })
@@ -23,7 +24,7 @@ function resolveAfter2Seconds() {
   
     // 1. Execution gets here almost instantly
     const slow = await resolveAfter2Seconds()
-    console.log(slow) // 2. this runs 2 seconds after 1.
+    console.log(slow.splice(0, 2)) // 2. this runs 2 seconds after 1.
   
     const fast = await resolveAfter1Second()
     console.log(fast) // 3. this runs 3 seconds after 1.

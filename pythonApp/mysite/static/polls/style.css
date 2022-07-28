@@ -1,0 +1,66 @@
+li a {
+    display: block;
+    color: green;
+}
+
+a:hover {
+    color: blue;
+}
+
+body {
+    /*background-image: url("https://c.tenor.com/HTaEZ-B3XU0AAAAd/barney-gumble.gif"); linear-gradient(to bottom, rgb(91, 234, 247), #eee);
+    */background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.questions {
+    /*background-image: url("images/celebration-loop.gif");*/
+    background-position: center;
+    background-size: cover;
+
+}
+
+.div-1 li:nth-child(even) {
+    border-color: red;
+    border-top: 1px;
+    border-bottom: 1cm;
+    color: brown
+}
+
+.list_question {
+    background-image: radial-gradient(#cccccc, white);
+    border-radius: 5%;
+    border-top: 4px solid #bb4455;
+    border-bottom: 4px solid pink;
+    font-size: 20px;
+}
+
+.list_question > div {
+    row-gap: 10px;
+}
+
+h1 {
+    background-color: #dddddd;
+    border-radius: 10%;
+    letter-spacing: 2px;
+}
+
+.table-test > table, thead, tr, td {
+    border-top: 4px;
+    border-color: red;
+    border: 4px;
+    border: 1px solid;
+    padding: 3px;
+}
+
+.table-test > thead {
+    text-align: center;
+    font-size: large;
+}
+
+
+
+
+
+

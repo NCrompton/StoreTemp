@@ -1,0 +1,118 @@
+<title> Guten Tag </Title>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+<link rel="stylesheet" type="text/css" href=" {% static 'polls/button.css' %}">
+<link rel="stylesheet" type="text/css" href=" {% static 'polls/nav.css' %}">
+<link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<div class="nav-menu">
+<ul class="menu-top">
+    <li class="menu-parent"><span class="menu-title">Col1</span>
+        <ul class="menu-second">
+            <li class="menu-child"><a href="{% url "polls:index" %}">Home</a></li>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Summary</a></li>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Jump</a></li>
+        </ul>
+    </li>
+    <li class="menu-parent"><span class="menu-title">Col2</span>
+        <ul class="menu-second">
+            <a href="{% url "polls:index" %}"><li class="menu-child">Home</li></a>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Summary</a></li>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Jump</a></li>
+        </ul>
+    </li>
+    <li class="menu-parent"><span class="menu-title">Col3</span>
+        <ul class="menu-second">
+            <a href="{% url "polls:index" %}"><li class="menu-child">Home3</li></a>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Summary3</a></li>
+            <li class="menu-child"><a href="{% url "polls:index" %}">Jump3</a></li>
+        </ul>
+    </li>
+</ul>
+</div>
+<!--<div class="nav-menu2">
+    <h>Welcome to Testing</h>
+    <ul><li><span class="menu-title">Col1</span>
+        <a href="{% url "polls:index" %}">Home</a>
+        <a href="{% url "polls:index" %}">Summary</a>
+        <a href="{% url "polls:index" %}">Jump</a></li>
+    <li><span class="menu-title">Col2</span>
+        <a href="{% url "polls:index" %}">Home</a>
+        <a href="{% url "polls:index" %}">Summary</a>
+        <a href="{% url "polls:index" %}">Jump</a></li>
+    <li><span class="menu-title">Col3</span>
+        <a href="{% url "polls:index" %}">Home3</a>
+        <a href="{% url "polls:index" %}">Summary3</a>
+        <a href="{% url "polls:index" %}">Jump3</a></li>
+    </ul>
+</div>
+
+<div class="nav-menu3">
+    <div class="control"><button class="menu-title">Col1</button>
+    <div class="ddown">
+        <a href="{% url "polls:index" %}">Home</a>
+        <a href="{% url "polls:index" %}">Summary</a>
+        <a href="{% url "polls:index" %}">Jump</a></div>
+    </div>
+    <div class="control"><button class="menu-title">Col2</button>
+    <div class="ddown">
+        <a href="{% url "polls:index" %}">Home</a>
+        <a href="{% url "polls:index" %}">Summary</a>
+        <a href="{% url "polls:index" %}">Jump</a></div>
+    </div>
+    <div class="control"><button class="menu-title">Col3</button>
+    <div class="ddown">
+        <a href="{% url "polls:index" %}">Home3</a>
+        <a href="{% url "polls:index" %}">Summary3</a>
+        <a href="{% url "polls:index" %}">Jump3</a></div>
+    </div>
+</div>-->
+
+<div class="navbar">
+    <div class="nav-head">
+        <a href="{% url "polls:index" %}">
+        <div class="nav-icon-2">
+            <i class="fa fa-car fa-2x"></i>
+        </div>
+        <div class="nav-icon">
+            ICON 
+        </div>
+     </a>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Home 
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="{% url "polls:add" %}">Add</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div> 
+    <div class="dropdown">
+        <button class="dropbtn">Question 
+          <i class="fa fa-spinner fa-spin"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Question 
+          <i class="fa fa-angle-double-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+    </div>
+  </div>
+  
+<div class="main-body">
+{% block header %}{% endblock %}
+{% block body %}{% endblock %}
+</div>

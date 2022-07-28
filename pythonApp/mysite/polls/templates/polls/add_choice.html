@@ -1,0 +1,12 @@
+<h1>Add a new choice</h1>
+<body>
+<form action="{% url 'polls:results' question.id %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>What choice do you wanna add</h1></legend>
+        <label for="choice">What is the choice</label>
+        <input type="text" name="choice" id="choice"/>
+        <input type="submit" name="Add"/>
+    </fieldset>
+</form>
+</body>

@@ -118,7 +118,10 @@ def main(url):
     mailserver(msg)
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if len(sys.argv) < 2:
+        print("please input the url you want to scrap as argument")
+    else:
+        main(sys.argv[1])
     
 
 
