@@ -1,0 +1,35 @@
+{% extends "./master.html" %}
+
+{% block body %}
+<h>Hello World</h>
+{% load socialaccount %}
+{% if user.is_authenticated %}
+{% if course %}
+<p>Welcome back {{ user.username }}</p>
+<table class="" border='solid'>
+        <thead>
+            <th>Course Code</th>
+            <th>Department</th>
+            <th>Area</th>
+        </thead>
+    {% for c in bro %}
+    
+        <tr>
+            {% if c.website != "" %}
+                <td><a href="{{c.website}}">{{c.code}}</a></td>
+            {% else %}
+                <td><span>{{c.code}}</span></td>
+            {% endif %}
+            <td>{{c.dept}}</td>
+            <td>{{c.subject_area}}</td>
+        </tr>
+
+    {% endfor %}
+</table>
+
+{% endif %}
+{% else %}
+<p>You are not logged in</p>
+<a href="{% provider_login_url 'github' %}">Sign in</a>
+{% endif %}
+{% endblock %}

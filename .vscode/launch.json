@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Launch nodeJS Program",
             "program": "${workspaceFolder}/login.js",
@@ -49,6 +50,16 @@
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
+        },
+        {
+            "name": "Python Console App",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": true,
+            "program": "${file}",
+            "env": {"PYTHONPATH": "${workspaceRoot}"},
+            "envFile": "${workspaceRoot}/.env",
+            "console":"integratedTerminal",
         }
     ]
 }
