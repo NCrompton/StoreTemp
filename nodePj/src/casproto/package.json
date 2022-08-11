@@ -1,0 +1,18 @@
+{
+  "name": "casprotopj",
+  "version": "1.0.0",
+  "description": "test all funtionality in cas",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mssql": "^8.1.2"
+  },
+  "author": "",
+  "license": "ISC"
+}

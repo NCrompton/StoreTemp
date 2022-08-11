@@ -9180,9 +9180,16 @@ nodePj/node_modules/xtend/mutable.js
 nodePj/node_modules/xtend/package.json
 nodePj/node_modules/xtend/README.md
 nodePj/node_modules/xtend/test.js
+nodePj/src/testPj/node_modules/
+nodePj/src/casProtoPj/node_modules/
 pythonApp/mysite/polls/__pycache__/
 pythonApp/mysite/mysite/__pycache__/
 pythonApp/mysite/polls/migrations/__pycache__/
 pythonApp/qweqwe/asdasd/migrations/__pycache__/
 pythonApp/qweqwe/asdasd/__pycache__/
 pythonApp/qweqwe/qweqwe/__pycache__/
+nodePj/node_modules
+nodePj/src/frontend/my-app/node_modules
+nodePj/src/frontend/my-app/build
+nodePj/src/frontend/my-app/.git
+nodePj/src/frontend/my-app/.gitignore
