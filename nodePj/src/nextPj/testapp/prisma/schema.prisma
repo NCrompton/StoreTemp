@@ -1,0 +1,488 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  account_id     Int       @id(map: "PK_account") @default(autoincrement())
+  sso_id         String    @db.VarChar(50)
+  e_name         String    @db.VarChar(100)
+  c_name         String?   @db.NVarChar(50)
+  title          String?   @db.VarChar(10)
+  type           Int       @default(1, map: "DF_account_type") @db.SmallInt
+  permission     String?   @db.VarChar(Max)
+  date_created   DateTime  @default(now(), map: "DF_account_date_created") @db.DateTime
+  date_modified  DateTime  @default(now(), map: "DF_account_date_modified") @db.DateTime
+  player_version String?   @db.VarChar(20)
+  last_logon     DateTime? @db.DateTime
+  web_logon_name String?   @db.VarChar(50)
+  web_logon_host String?   @db.VarChar(150)
+  u_name         String    @default("suser_sname()", map: "DF_account_u_name") @db.VarChar(50)
+  r_host         String    @default("host_name()", map: "DF_account_r_host") @db.VarChar(50)
+  is_current     Boolean   @default(false, map: "DF_account_is_current")
+  report         report[]
+}
+
+model cilo {
+  cilo_id          Int           @id(map: "PK_cilo") @default(autoincrement())
+  course_detail_id Int
+  desc             String?       @db.NVarChar(Max)
+  seq              Int?
+  date_created     DateTime      @default(now(), map: "DF_cilo_date_created") @db.DateTime
+  date_modified    DateTime      @default(now(), map: "DF_cilo_date_modified") @db.DateTime
+  course_detail    course_detail @relation(fields: [course_detail_id], references: [course_detail_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cilo_course_detail")
+  cilo_at          cilo_at[]
+  cilo_tla         cilo_tla[]
+}
+
+model cilo_at {
+  cilo_id      Int
+  course_at_id Int
+  cilo         cilo      @relation(fields: [cilo_id], references: [cilo_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cilo_at_cilo")
+  course_at    course_at @relation(fields: [course_at_id], references: [course_at_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cilo_at_course_at")
+
+  @@id([cilo_id, course_at_id], map: "PK_cilo_at")
+}
+
+model cilo_tla {
+  cilo_id       Int
+  course_tla_id Int
+  cilo          cilo       @relation(fields: [cilo_id], references: [cilo_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cilo_tla_cilo")
+  course_tla    course_tla @relation(fields: [course_tla_id], references: [course_tla_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cilo_tla_course_tla")
+
+  @@id([cilo_id, course_tla_id], map: "PK_cilo_tla")
+}
+
+model course {
+  course_id         Int                 @id(map: "PK__course__8F1EF7AE60A75C0F") @default(autoincrement())
+  code              String?             @unique(map: "UK_course") @db.VarChar(10)
+  dept              String?             @db.VarChar(10)
+  website           String?             @db.VarChar(250)
+  date_created      DateTime            @default(now(), map: "DF_course_date_created") @db.DateTime
+  date_modified     DateTime            @default(now(), map: "DF_course_date_modified") @db.DateTime
+  subject_area      String?             @db.VarChar(20)
+  course_detail     course_detail[]
+  course_staff      course_staff[]
+  pg_course_pilo    pg_course_pilo[]
+  prog_course_offer prog_course_offer[]
+  prog_grp_course   prog_grp_course[]
+}
+
+model course_archive {
+  course_archive_id Int      @id(map: "PK_course_archive") @default(autoincrement())
+  code              String   @unique(map: "UK_course_archive") @db.VarChar(10)
+  title             String   @db.VarChar(100)
+  date_created      DateTime @default(now(), map: "DF_course_archive_date_created") @db.DateTime
+  web_logon_name    String?  @db.VarChar(50)
+  web_logon_host    String?  @db.VarChar(150)
+  u_name            String   @default("suser_sname()", map: "DF_course_archive_u_name") @db.VarChar(50)
+  r_host            String   @default("host_name()", map: "DF_course_archive_r_host") @db.VarChar(50)
+}
+
+model course_at {
+  course_at_id     Int       @id(map: "PK_course_at") @default(autoincrement())
+  course_detail_id Int
+  title            String    @db.VarChar(Max)
+  desc             String?   @db.VarChar(Max)
+  date_created     DateTime  @default(now(), map: "DF_course_at_date_created") @db.DateTime
+  date_modified    DateTime  @default(now(), map: "DF_course_at_date_modified") @db.DateTime
+  cilo_at          cilo_at[]
+}
+
+model course_detail {
+  course_detail_id Int                      @id(map: "PK_course_detail") @default(autoincrement())
+  course_id        Int
+  name             String?                  @db.VarChar(100)
+  credit           Int?
+  duration         Int?
+  level            String?                  @db.VarChar(5)
+  medium           String?                  @db.VarChar(20)
+  cw_percent       Int?
+  exam_percent     Int?
+  exam_duration    Int?
+  precursor        String?                  @db.VarChar(Max)
+  prerequisite     String?                  @db.VarChar(Max)
+  equivalent       String?                  @db.VarChar(Max)
+  exclusive        String?                  @db.VarChar(Max)
+  fund_mode        String?                  @db.VarChar(25)
+  cef_course       Boolean?
+  block_transfer   Boolean?
+  remark           String?                  @db.NVarChar(Max)
+  version          Int?                     @db.SmallInt
+  is_current       Int?                     @db.SmallInt
+  date_created     DateTime                 @default(now(), map: "DF_course_detail_date_created") @db.DateTime
+  date_modified    DateTime                 @default(now(), map: "DF_course_detail_date_modified") @db.DateTime
+  grade_pattern    String?                  @db.VarChar(20)
+  cohort_from      Int                      @default(0, map: "DF_course_detail_cohort_from")
+  cohort_to        Int                      @default(0, map: "DF_course_detail_cohort_to")
+  aim              String?                  @db.NVarChar(Max)
+  grade_remark     String?                  @db.NVarChar(Max)
+  kw_syllabus      String?                  @db.NVarChar(Max)
+  syllabus         String?                  @db.NVarChar(Max)
+  u_name           String                   @default("suser_sname()", map: "DF_course_detail_u_name") @db.VarChar(50)
+  r_host           String                   @default("host_name()", map: "DF_course_detail_r_host") @db.VarChar(50)
+  web_logon_name   String?                  @db.VarChar(50)
+  web_logon_host   String?                  @db.VarChar(150)
+  text_reading     String?                  @db.VarChar(Max)
+  online_reading   String?                  @db.VarChar(Max)
+  semester_id      Int?
+  equivalent_old   String?                  @db.VarChar(Max)
+  timestamp        Unsupported("timestamp")
+  course           course                   @relation(fields: [course_id], references: [course_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_course_detail_course")
+  cilo             cilo[]
+  semester_course  semester_course[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model course_detail_log {
+  course_detail_id Int
+  course_id        Int
+  name             String?  @db.VarChar(100)
+  credit           Int?
+  duration         Int?
+  level            String?  @db.VarChar(5)
+  medium           String?  @db.VarChar(20)
+  cw_percent       Int?
+  exam_percent     Int?
+  exam_duration    Int?
+  precursor        String?  @db.VarChar(Max)
+  prerequisite     String?  @db.VarChar(Max)
+  equivalent       String?  @db.VarChar(Max)
+  exclusive        String?  @db.VarChar(Max)
+  fund_mode        String?  @db.VarChar(25)
+  cef_course       Boolean?
+  block_transfer   Boolean?
+  remark           String?  @db.NVarChar(Max)
+  version          Int?     @db.SmallInt
+  is_current       Int?     @db.SmallInt
+  date_created     DateTime @db.DateTime
+  date_modified    DateTime @db.DateTime
+  grade_pattern    String?  @db.VarChar(20)
+  cohort_from      Int
+  cohort_to        Int
+  aim              String?  @db.NVarChar(Max)
+  grade_remark     String?  @db.NVarChar(Max)
+  kw_syllabus      String?  @db.NVarChar(Max)
+  syllabus         String?  @db.NVarChar(Max)
+  u_name           String   @db.VarChar(50)
+  r_host           String   @db.VarChar(50)
+  web_logon_name   String?  @db.VarChar(50)
+  web_logon_host   String?  @db.VarChar(150)
+  text_reading     String?  @db.VarChar(Max)
+  online_reading   String?  @db.VarChar(Max)
+  semester_id      Int?
+  equivalent_old   String?  @db.VarChar(Max)
+  timestamp        Bytes?   @db.Binary(8)
+
+  @@ignore
+}
+
+model course_staff {
+  course_id    Int
+  staff_sso_id String @db.VarChar(50)
+  course       course @relation(fields: [course_id], references: [course_id], onUpdate: NoAction, map: "FK_course_staff_course")
+
+  @@id([course_id, staff_sso_id], map: "PK_course_staff")
+}
+
+model course_tla {
+  course_tla_id    Int        @id(map: "PK_course_tla") @default(autoincrement())
+  course_detail_id Int
+  title            String     @db.VarChar(Max)
+  desc             String?    @db.VarChar(Max)
+  date_created     DateTime   @default(now(), map: "DF__course_tl__date___61316BF4") @db.DateTime
+  date_modified    DateTime   @default(now(), map: "DF__course_tl__date___6225902D") @db.DateTime
+  cilo_tla         cilo_tla[]
+}
+
+model django_migrations {
+  id      BigInt   @id(map: "PK__django_m__3213E83FB168F6FD") @default(autoincrement())
+  app     String   @db.NVarChar(255)
+  name    String   @db.NVarChar(255)
+  applied DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model IDMap {
+  cityu_id       String                   @db.VarChar(50)
+  eid            String                   @db.VarChar(50)
+  email          String                   @db.VarChar(50)
+  uid            String                   @db.VarChar(50)
+  gp             String?                  @db.VarChar(50)
+  e_name         String                   @db.VarChar(50)
+  created_date   String                   @default("getdate()", map: "DF_IDMap_created_date") @db.VarChar(50)
+  modified_date  String                   @default("getdate()", map: "DF_IDMap_modified_date") @db.VarChar(50)
+  db_access_user String                   @default("suser_sname()", map: "DF_IDMap_db_access_user") @db.VarChar(50)
+  timestamp      Unsupported("timestamp")
+  rhost          String                   @default("host_name()", map: "DF_IDMap_rhost") @db.VarChar(50)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model people {
+  section_id   Int?
+  section_name String? @db.VarChar(200)
+  is_tdshow    Boolean
+  title        String? @db.VarChar(50)
+  e_name       String? @db.VarChar(100)
+  c_name       String? @db.NVarChar(50)
+  sso_id       String? @db.VarChar(50)
+
+  @@ignore
+}
+
+model pg_course_pilo {
+  course_id     Int
+  pilo_id       Int
+  prog_grp_id   Int
+  date_created  DateTime @default(now(), map: "DF_pg_course_pilo_date_created") @db.DateTime
+  date_modified DateTime @default(now(), map: "DF_pg_course_pilo_date_modified") @db.DateTime
+  type          String   @default("T,P,M,X,X,X,X,X,X", map: "DF_pg_course_pilo_type") @db.VarChar(50)
+  course        course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_pg_course_pilo_course")
+  pilo          pilo     @relation(fields: [pilo_id], references: [pilo_id], onUpdate: NoAction, map: "FK_pg_course_pilo_pilo")
+  prog_grp      prog_grp @relation(fields: [prog_grp_id], references: [prog_grp_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_pg_course_pilo_prog_grp")
+
+  @@id([course_id, pilo_id, prog_grp_id], map: "PK_pg_course_pilo")
+}
+
+model pilo {
+  pilo_id        Int              @id(map: "PK_pilo") @default(autoincrement())
+  programme_id   Int
+  desc           String?          @db.NVarChar(Max)
+  seq            Int?
+  date_created   DateTime         @default(now(), map: "DF_pilo_date_created") @db.DateTime
+  date_modified  DateTime         @default(now(), map: "DF_pilo_date_modified") @db.DateTime
+  programme      programme        @relation(fields: [programme_id], references: [programme_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_pilo_programme")
+  pg_course_pilo pg_course_pilo[]
+}
+
+model prog_course_offer {
+  prog_course_offer_id         Int                      @id(map: "PK_prog_course_offer") @default(autoincrement())
+  programme_id                 Int
+  course_id                    Int
+  code_remark                  String?                  @db.VarChar(Max)
+  title_remark                 String?                  @db.VarChar(Max)
+  unit_remark                  String?                  @db.VarChar(Max)
+  prerequisite_remark          String?                  @db.VarChar(Max)
+  precursor_remark             String?                  @db.VarChar(Max)
+  equivalent_remark            String?                  @db.VarChar(Max)
+  equivalent_old_remark        String?                  @db.VarChar(Max)
+  exclusive_remark             String?                  @db.VarChar(Max)
+  offered_sem                  String?                  @db.VarChar(Max)
+  remark                       String?                  @db.VarChar(Max)
+  date_created                 DateTime                 @default(now(), map: "DF_prog_course_offer_date_created") @db.DateTime
+  date_modified                DateTime                 @default(now(), map: "DF_prog_course_offer_date_modified") @db.DateTime
+  web_logon_name               String?                  @db.VarChar(50)
+  web_logon_host               String?                  @db.VarChar(Max)
+  u_name                       String                   @default("suser_sname()", map: "DF_prog_course_offer_u_name") @db.VarChar(50)
+  r_host                       String                   @default("host_name()", map: "DF_prog_course_offer_r_host") @db.VarChar(Max)
+  timestamp                    Unsupported("timestamp")
+  is_show_exclusive_with_title Boolean                  @default(false, map: "DF_prog_course_offer_is_show_exclusive_with_title")
+  course                       course                   @relation(fields: [course_id], references: [course_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_course_offer_course")
+  programme                    programme                @relation(fields: [programme_id], references: [programme_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_course_offer_programme")
+}
+
+model prog_grp {
+  prog_grp_id     Int               @id(map: "PK_prog_grp") @default(autoincrement())
+  programme_id    Int
+  desc            String?           @db.NVarChar(Max)
+  date_created    DateTime          @default(now(), map: "DF_prog_grp_date_created") @db.DateTime
+  date_modified   DateTime          @default(now(), map: "DF_prog_grp_date_modified") @db.DateTime
+  seq             Int               @default(0, map: "DF__prog_grp__seq__0B5CAFEA") @db.SmallInt
+  remark          String?           @db.NVarChar(Max)
+  programme       programme         @relation(fields: [programme_id], references: [programme_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_grp_programme")
+  pg_course_pilo  pg_course_pilo[]
+  prog_grp_course prog_grp_course[]
+}
+
+model prog_grp_course {
+  prog_grp_course_id Int      @id(map: "PK_prog_grp_course") @default(autoincrement())
+  prog_grp_id        Int
+  course_id          Int
+  date_created       DateTime @default(now(), map: "DF_prog_grp_course_date_created") @db.DateTime
+  date_modified      DateTime @default(now(), map: "DF_prog_grp_course_date_modified") @db.DateTime
+  course             course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_grp_course_course")
+  prog_grp           prog_grp @relation(fields: [prog_grp_id], references: [prog_grp_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_grp_course_prog_grp1")
+
+  @@unique([prog_grp_id, course_id], map: "UK_prog_grp_course")
+}
+
+model prog_staff {
+  programme_id Int
+  staff_sso_id String    @db.VarChar(50)
+  programme    programme @relation(fields: [programme_id], references: [programme_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_prog_staff_programme")
+
+  @@id([programme_id, staff_sso_id], map: "PK__prog_sta__2E2B747F58671BC9")
+}
+
+model programme {
+  programme_id      Int                 @id(map: "PK_programme") @default(autoincrement())
+  name              String?             @db.VarChar(100)
+  award_title       String?             @db.VarChar(100)
+  code              String?             @db.VarChar(20)
+  alias             String?             @db.NVarChar(40)
+  dept              String?             @db.VarChar(10)
+  mode              String?             @db.VarChar(20)
+  fund_mode         String?             @db.VarChar(25)
+  cohort            String?             @db.VarChar(8)
+  intake            String?             @db.VarChar(50)
+  date_created      DateTime            @default(now(), map: "DF_programme_date_created") @db.DateTime
+  date_modified     DateTime            @default(now(), map: "DF_programme_date_modified") @db.DateTime
+  web_logon_name    String?             @db.VarChar(50)
+  web_logon_host    String?             @db.VarChar(150)
+  u_name            String              @default("suser_sname()", map: "DF_programme_u_name") @db.VarChar(50)
+  r_host            String              @default("host_name()", map: "DF_programme_r_host") @db.VarChar(50)
+  pilo              pilo[]
+  prog_course_offer prog_course_offer[]
+  prog_grp          prog_grp[]
+  prog_staff        prog_staff[]
+  study_plan        study_plan[]
+
+  @@unique([code, cohort], map: "UK_code_cohort")
+}
+
+model report {
+  report_id     Int      @id(map: "PK_report") @default(autoincrement())
+  account_id    Int?
+  title         String?  @db.VarChar(50)
+  desc          String?  @db.NVarChar(Max)
+  password      String?  @db.VarChar(256)
+  date_created  DateTime @default(now(), map: "DF_report_date_created") @db.DateTime
+  date_modified DateTime @default(now(), map: "DF_report_date_modified") @db.DateTime
+  fields        String?  @db.VarChar(Max)
+  criteria      String?  @db.VarChar(Max)
+  view          String?  @db.VarChar(100)
+  is_share      Boolean  @default(false, map: "DF__report__is_share__0A688BB1")
+  type          Int      @default(0, map: "DF_report_type")
+  account       account? @relation(fields: [account_id], references: [account_id], onDelete: NoAction, map: "FK_report_account")
+}
+
+model semester {
+  semester_id     Int               @id(map: "PK_semester") @default(autoincrement())
+  start_date      DateTime?         @db.DateTime
+  end_date        DateTime?         @db.DateTime
+  year            String            @db.VarChar(10)
+  code            String?           @db.VarChar(5)
+  date_created    DateTime          @default(now(), map: "DF_semester_date_created") @db.DateTime
+  date_modified   DateTime          @default(now(), map: "DF_semester_date_modified") @db.DateTime
+  semester_course semester_course[]
+}
+
+model semester_course {
+  semester_course_id Int            @id(map: "PK_semester_course") @default(autoincrement())
+  course_detail_id   Int?
+  semester_id        Int
+  credit             Int?
+  capacity           String?        @db.VarChar(50)
+  c_hr               String?        @db.VarChar(50)
+  t_hr               String?        @db.VarChar(50)
+  l_hr               String?        @db.VarChar(50)
+  s_hr               String?        @db.VarChar(50)
+  remark             String?        @db.NVarChar(Max)
+  is_current         Boolean?
+  date_created       DateTime       @default(now(), map: "DF_semester_course_date_created") @db.DateTime
+  date_modified      DateTime       @default(now(), map: "DF_semester_course_date_modified") @db.DateTime
+  sem_hr             String?        @db.VarChar(50)
+  sl_hr              String?        @db.VarChar(50)
+  tutorial           String?        @db.VarChar(50)
+  staff              String?        @db.VarChar(150)
+  prog_name          String?        @db.VarChar(100)
+  prog_repeat        Boolean        @default(false, map: "DF_semester_course_is_repeat")
+  prog_stu_num       String?        @db.VarChar(50)
+  prog_year          String?        @db.VarChar(50)
+  prog_cohort        String?        @db.VarChar(50)
+  prog_intake        String?        @db.VarChar(50)
+  prog_mode          String?        @db.VarChar(50)
+  prog_dept          String?        @db.VarChar(50)
+  prog_course_type   String?        @db.VarChar(50)
+  prog_fund_mode     String?        @db.VarChar(50)
+  web_logon_name     String?        @db.VarChar(50)
+  web_logon_host     String?        @db.VarChar(50)
+  u_name             String         @default("suser_sname()", map: "DF_semester_course_u_name") @db.VarChar(50)
+  r_host             String         @default("host_name()", map: "DF_semester_course_r_host") @db.VarChar(50)
+  code               String?        @db.VarChar(10)
+  name               String?        @db.VarChar(100)
+  course_detail      course_detail? @relation(fields: [course_detail_id], references: [course_detail_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_semester_course_course_detail")
+  semester           semester       @relation(fields: [semester_id], references: [semester_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_semester_course_semester")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model semester_course_log {
+  semester_course_id Int
+  course_detail_id   Int?
+  semester_id        Int
+  credit             Int?
+  capacity           String?  @db.VarChar(50)
+  c_hr               String?  @db.VarChar(50)
+  t_hr               String?  @db.VarChar(50)
+  l_hr               String?  @db.VarChar(50)
+  s_hr               String?  @db.VarChar(50)
+  remark             String?  @db.NVarChar(Max)
+  is_current         Boolean?
+  date_created       DateTime @db.DateTime
+  date_modified      DateTime @db.DateTime
+  sem_hr             String?  @db.VarChar(50)
+  sl_hr              String?  @db.VarChar(50)
+  tutorial           String?  @db.VarChar(50)
+  staff              String?  @db.VarChar(150)
+  prog_name          String?  @db.VarChar(100)
+  prog_repeat        Boolean
+  prog_stu_num       String?  @db.VarChar(50)
+  prog_year          String?  @db.VarChar(50)
+  prog_cohort        String?  @db.VarChar(50)
+  prog_intake        String?  @db.VarChar(50)
+  prog_mode          String?  @db.VarChar(50)
+  prog_dept          String?  @db.VarChar(50)
+  prog_course_type   String?  @db.VarChar(50)
+  prog_fund_mode     String?  @db.VarChar(50)
+  web_logon_name     String?  @db.VarChar(50)
+  web_logon_host     String?  @db.VarChar(50)
+  u_name             String   @db.VarChar(50)
+  r_host             String   @db.VarChar(50)
+  code               String?  @db.VarChar(10)
+  name               String?  @db.VarChar(100)
+  action_date        DateTime @default(now(), map: "DF_semester_course_log_action_date_1") @db.DateTime
+  action             String?  @db.VarChar(50)
+
+  @@ignore
+}
+
+model study_plan {
+  study_plan_id  Int              @id(map: "PK_stidy_plan") @default(autoincrement())
+  programme_id   Int
+  title          String?          @db.VarChar(50)
+  desc           String?          @db.NVarChar(Max)
+  date_created   DateTime         @default(now(), map: "DF_study_plan_date_created") @db.DateTime
+  date_modified  DateTime         @default(now(), map: "DF_study_plan_date_modified") @db.DateTime
+  programme      programme        @relation(fields: [programme_id], references: [programme_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_study_plan_programme")
+  study_plan_grp study_plan_grp[]
+}
+
+model study_plan_grp {
+  study_plan_grp_id Int        @id(map: "PK_study_plan_grp") @default(autoincrement())
+  study_plan_id     Int
+  semester_id       Int
+  title             String     @db.VarChar(Max)
+  desc              String     @db.VarChar(Max)
+  credit_min        Int        @default(0, map: "DF_study_plan_grp_credit_min")
+  credit_max        Int?
+  remark            String?    @db.VarChar(Max)
+  date_created      DateTime   @default(now(), map: "DF__study_pla__date___24E777C3") @db.DateTime
+  date_modified     DateTime   @default(now(), map: "DF__study_pla__date___25DB9BFC") @db.DateTime
+  study_plan        study_plan @relation(fields: [study_plan_id], references: [study_plan_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_study_plan_grp_study_plan")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6100551192") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}

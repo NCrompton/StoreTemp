@@ -1,0 +1,3 @@
+.navbaritem{
+    @apply block py-2 border
+}
