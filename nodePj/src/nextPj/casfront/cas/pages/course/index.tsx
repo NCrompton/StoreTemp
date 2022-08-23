@@ -4,6 +4,8 @@ import ShowAll from '../../components/showall'
 import type { Course } from '../../interface/Course'
 import { IconPlus } from '@tabler/icons'
 import Link from 'next/link';
+import { useEffect } from 'react'
+import Document from 'next/document'
 
 export default function Course({data}: {[key:string]:Array<Course>}){
     
@@ -15,6 +17,7 @@ export default function Course({data}: {[key:string]:Array<Course>}){
         return <div>Loading...</div>
     }
 
+    console.log(Document.contextType)
     return(
         <div className="">
             <div className="flex border-b border-dark-100 text-[30px] font-sans">

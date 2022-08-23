@@ -2,13 +2,29 @@
 import { Button, Slider, AppShell, Header, Navbar, Group, ActionIcon, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { IconAlbum, IconDatabase, IconMan, Icon3dRotate, IconLineDashed, IconSun, IconMoon } from '@tabler/icons'
 import Link from 'next/link';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function Navbars(){
+export default function Navbars({controller} : {[key:string]:any}){
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const [active, setActive] = useState(false);
     const dark = colorScheme === 'dark';
     const theme = useMantineTheme();
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+        };
+        console.log(scrollY)
+        handleScroll();
+
+            window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
        // <div className="flex w-screen h-screen bg-slate-300">
@@ -18,7 +34,7 @@ export default function Navbars(){
                     colorScheme: colorScheme
                 })}>
                     <Navbar.Section >
-                        <Header height={70} className="pl-2 pr-5">
+                        <Header height={70} className="pl-2 pr-5 transition">
                         <Group className=' border-zinc-300'>
                             {/* <Icon3dRotate size={20} color="green" className="m-5 scale-3x rounded-md border border-slate-300 transition duration-500 hover:scale-100"/>*/}
                              <a href='/'><Icon3dRotate size={60} color="green" className="rounded-md border-slate-300 cursor-pointer"/></a>

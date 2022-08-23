@@ -3,13 +3,25 @@ import type { AppProps } from 'next/app'
 import Navbar from '../components/navbar'
 import Layout from '../components/layout'
 import { MantineProvider, ColorSchemeProvider, ColorScheme, Global } from '@mantine/core'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { useEffect } from 'react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+  const navbarControl = useRef()
+  const shrink = () => {
+    console.log(navbarControl.current);
+  }
     
+  useEffect(() => {
+    if(document.body.scrollTop > 50){
+      shrink();
+    }
+    console.log(window.scrollY);
+  },[])
+
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{
@@ -38,7 +50,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               backgroundColor:colorScheme==='dark'? theme.colors.dark[6]: theme.colors.light[0]
             }
           })}/>
-        <Layout>
+        <Layout navbar={navbarControl}>
           <Component {...pageProps} />
         </Layout>
       </MantineProvider>
