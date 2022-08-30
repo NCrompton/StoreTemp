@@ -1,0 +1,144 @@
+### Withdraw all course code for reference
+
+GET http://localhost:3002/course HTTP/1.1
+
+### Withdraw course data with specific course code
+
+GET http://localhost:3002/course/407 HTTP/1.1
+
+### check if checkType() function correctly
+
+GET http://localhost:3002/course/2/CS2115/CS HTTP/1.1
+
+
+### Withdraw course data with subject area
+
+GET http://localhost:3002/course/!/!/EN HTTP/1.1
+
+### Withdraw non existing course data
+
+GET http://localhost:3002/course/500 HTTP/1.1
+
+### Input invalid parameters
+
+GET http://localhost:3002/course/g HTTP/1.1
+
+### create course with course data in body
+POST http://localhost:3002/course/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1238",
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### create course with incorrect course attributes
+POST http://localhost:3002/course/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1238",
+    "dept": "CS",
+    "subject_areas": "CS",
+    "ridiculous": true
+}
+
+### create course without course attributes
+POST http://localhost:3002/course/ HTTP/1.1
+content-type: application/json
+
+{
+    
+}
+
+### create course repeated code
+POST http://localhost:3002/course/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1234",
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### create course with incorrect data format
+POST http://localhost:3002/course/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1234"],
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### update course data
+
+PUT http://localhost:3002/course/407 HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1237"
+}
+
+### update course data with same data 
+
+PUT http://localhost:3002/course/407 HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1237",
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### update course data with partially same data 
+
+PUT http://localhost:3002/course/407 HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1235",
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### update non-existing course data
+
+PUT http://localhost:3002/course/5000 HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1235"],
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### restore inactive data
+
+PUT http://localhost:3002/course/436 HTTP/1.1
+content-type: application/json
+
+{
+    "website": ""
+}
+
+### update course data with incorrect data format
+
+PUT http://localhost:3002/course/436 HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1235"],
+    "dept": "CS",
+    "subject_area": "CS",
+    "website": ""
+}
+
+### delete course data
+
+DELETE http://localhost:3002/course/406 HTTP/1.1
+
+### delete non existing course data
+
+DELETE http://localhost:3002/course/500 HTTP/1.1
