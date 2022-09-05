@@ -4,7 +4,7 @@ GET http://localhost:3002/course HTTP/1.1
 
 ### Withdraw course data with specific course code
 
-GET http://localhost:3002/course/407 HTTP/1.1
+GET http://localhost:3002/course/400 HTTP/1.1
 
 ### check if checkType() function correctly
 
@@ -28,9 +28,9 @@ POST http://localhost:3002/course/ HTTP/1.1
 content-type: application/json
 
 {
-    "code": "CS1238",
-    "dept": "CS",
-    "subject_area": "CS"
+    "code": "AB4444",
+    "dept": "TEST",
+    "subject_area": "TEST"
 }
 
 ### create course with incorrect course attributes
@@ -94,13 +94,13 @@ content-type: application/json
 
 ### update course data with partially same data 
 
-PUT http://localhost:3002/course/407 HTTP/1.1
+PUT http://localhost:3002/course/436 HTTP/1.1
 content-type: application/json
 
 {
-    "code": "CS1235",
-    "dept": "CS",
-    "subject_area": "CS"
+    "code": "AB6666",
+    "dept": "Test",
+    "subject_area": "Test"
 }
 
 ### update non-existing course data
@@ -116,7 +116,7 @@ content-type: application/json
 
 ### restore inactive data
 
-PUT http://localhost:3002/course/436 HTTP/1.1
+PUT http://localhost:3002/course/406 HTTP/1.1
 content-type: application/json
 
 {
@@ -142,3 +142,12 @@ DELETE http://localhost:3002/course/406 HTTP/1.1
 ### delete non existing course data
 
 DELETE http://localhost:3002/course/500 HTTP/1.1
+
+### Hard delete existing course data
+
+DELETE http://localhost:3002/course/437 HTTP/1.1
+content-type: application/json
+
+{
+    "wipe": true
+}

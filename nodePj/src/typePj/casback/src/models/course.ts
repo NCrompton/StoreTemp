@@ -228,9 +228,6 @@ export class course
 					type: DataTypes.STRING(10),
 					allowNull: true,
 					unique: "UK_course",
-					validate: {
-						len: [1, 1],
-					},
 				},
 				dept: {
 					type: DataTypes.STRING(10),

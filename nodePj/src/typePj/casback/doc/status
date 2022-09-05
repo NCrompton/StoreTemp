@@ -1,0 +1,9 @@
+status:
+    200: "OK",
+    201: "Data created",
+    204: "No data found",
+    300: "Multiple response",
+    304: "Nothing is modified",
+    400: "Bad request",
+    409: "Conflict with resources state"
+    500: "Internal Server Error",
