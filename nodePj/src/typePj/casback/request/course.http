@@ -135,6 +135,33 @@ content-type: application/json
     "website": ""
 }
 
+### update course data with more than 1 entries
+
+PUT http://localhost:3002/course/-/TEST3 HTTP/1.1
+content-type: application/json
+
+{
+    "dept": "TEST3"
+}
+
+### bulk update course_id
+
+PUT http://localhost:3002/course/!/!/TEST2 HTTP/1.1
+content-type: application/json
+
+{
+    "course_id": "AB1111"
+}
+
+### restore course data which is not deleted
+
+PUT http://localhost:3002/course/436 HTTP/1.1
+content-type: application/json
+
+{
+    "website": ""
+}
+
 ### delete course data
 
 DELETE http://localhost:3002/course/406 HTTP/1.1

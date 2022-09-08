@@ -15,7 +15,8 @@ const SQL = model.course
 
 export async function getCourse(req: Request, res: Response) {
 	const result = await findAllCourse(undefined, ["code"])
-	return res.json(result)
+	const status = 200
+	return res.status(status).json(result)
 }
 
 export async function getCourseById(req: Request, res: Response) {
@@ -44,7 +45,7 @@ export async function createCourse(req: Request, res: Response) {
 
 	let status: number = 500
 	let error: string = ""
-	let data: course | void = new course()
+	let data: course | void
 
 	/* 
 		check if any parameters are not used 
@@ -82,19 +83,19 @@ export async function createCourse(req: Request, res: Response) {
 		status = 400
 		error = "Parameter is insufficient to create a new data"
 	}
-	/* return status === 201
+	return status === 201
 		? unused
 			? res.status(status).json({ status, data, warning })
 			: res.status(status).json({ status, data })
-		: res.status(status).json({ status, error }) */
-	return res.status(status).json({ status, data, warning, error })
+		: res.status(status).json({ status, error })
+	//return res.status(status).json({ status, data, warning, error })
 }
 
 export async function updateCourse(req: Request, res: Response) {
 	const body: { [key: string]: any } = req.body
 	let status: number = 500
 	let error: string = ""
-	let data: course = new course()
+	let data: course | Array<number>
 	let warning: string = ""
 	const unused: Array<{ [key: string]: string }> | boolean =
 		checkUnusedParam(body)
@@ -122,8 +123,15 @@ export async function updateCourse(req: Request, res: Response) {
 				}
 			} else {
 				if (result.length > 1) {
-					status = 300
-					error = "Too many entry fit the params"
+					if (!hasUniqueParam(body)) {
+						status = 200
+						data = await SQL.update(body, {
+							where: whereState,
+						})
+					} else {
+						status = 300
+						error = "Cannot bulk update unique value"
+					}
 				} else {
 					status = 204
 					error = "No data found"
@@ -152,13 +160,16 @@ export async function deleteCourse(req: Request, res: Response) {
 	const wipe: boolean = req.body.wipe
 	let status: string = "200"
 	let error: string = ""
+	let data: Array<number> = []
 	const whereState = wipe
 		? createWhereStatement(req.params, true)
 		: createWhereStatement(req.params)
 	let result = await findAllCourse(whereState)
 	if (result.data.length > 1) {
-		status = "300"
+		status = "200"
 		error = "Too many entry fit the params"
+		data = await SQL.update({ website: "inactive" }, { where: whereState })
+		return res.status(200).json({ status, data })
 	} else if (result.status === 204) {
 		return res.json(result)
 	}
@@ -182,16 +193,24 @@ function checkUnusedParam(params: { [key: string]: any }) {
 async function checkUniqueParam(params: { [key: string]: any }) {
 	let result = true
 	if (params.hasOwnProperty("code")) {
-		result =
-			(await model.course.count({ where: { code: params.code } })) === 0 &&
-			result
+		result = (await SQL.count({ where: { code: params.code } })) === 0 && result
 	}
 	if (params.hasOwnProperty("course_id")) {
 		result =
-			(await model.course.count({ where: { course_id: params.course_id } })) ===
-				0 && result
+			(await SQL.count({ where: { course_id: params.course_id } })) === 0 &&
+			result
 	}
 	return result
+}
+
+function hasUniqueParam(params: {}) {
+	return params.hasOwnProperty("code")
+}
+
+function nonNullParams(params: { [key: string]: any }) {
+	params.website ?? Object.assign(params, { website: "" })
+	params.subject_area ?? Object.assign(params, { subject_area: "" })
+	return params
 }
 
 function checkDataChanges(params: { [key: string]: any }, data: course) {
@@ -322,4 +341,5 @@ export {
 	checkValidParam,
 	checkDataChanges,
 	checkUniqueParam,
+	nonNullParams,
 }

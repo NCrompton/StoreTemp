@@ -89,6 +89,9 @@ describe("GET", () => {
 describe("POST", () => {
 	it("create course data", async () => {
 		await spec()
+			.delete(url + "/!/AB7777")
+			.withBody({ wipe: true })
+		await spec()
 			.post(url)
 			.withJson({ code: "AB7777", dept: "Test", subject_area: "Test" })
 			.expectStatus(201)
@@ -126,6 +129,7 @@ describe("POST", () => {
 		})
 	})
 	it("create course data with incorrect attributes + delete with CourseId", async () => {
+		await spec().delete(url + "/!/AB9999")
 		const res = await spec()
 			.post(url)
 			.withJson({
@@ -158,7 +162,7 @@ describe("POST", () => {
 			.expectStatus(200)
 	})
 	it("create course data with duplicate data", async () => {
-		const sampleList = ["CS2115", "AB7777", "CS3334"]
+		const sampleList = ["CS2115", "CS2204", "CS3334"]
 		for (let s of sampleList) {
 			await spec()
 				.post(url)
@@ -193,7 +197,7 @@ describe("PUT", () => {
 		spec()
 			.put(url + "/436")
 			.withJson({
-				code: "AB7777",
+				code: "AB8888",
 				dept: "TEST",
 				website: "Test.com",
 				subject_area: "TEST",
@@ -259,9 +263,30 @@ describe("PUT", () => {
 				error: "Course with name CS1237 already existed",
 			})
 	})
-	it("bulk update data code with dept", async () => {
+	it("bulk update unique data", async () => {
 		await spec()
-			.put(url + "/!/EN")
+			.put(url + "/!/!/Test")
+			.withJson({ code: "ABC1111" })
+			.expectStatus(300)
+			.expectJsonMatch({
+				error: "Cannot bulk update unique value",
+			})
+	})
+	it("bulk update non-unique data", async () => {
+		await spec()
+			.put(url + "/!/!/TEST3")
+			.withJson({ dept: "TEST4" })
+			.expectStatus(200)
+			.expectJsonMatch({
+				data: [2],
+			})
+		await spec()
+			.put(url + "/!/!/TEST4")
+			.withJson({ dept: "TEST3" })
+	})
+	/* it("bulk update data code with dept", async () => {
+		await spec()
+			.put(url + "/!/!/EN")
 			.withJson({ code: "ABC1111" })
 			.expectStatus(300)
 			.expectJsonMatch({
@@ -276,20 +301,19 @@ describe("PUT", () => {
 			.expectJsonMatch({
 				error: "Too many entry fit the params",
 			})
-	})
+	}) */
 	it("update non-existed data", async () => {
 		await spec()
 			.put(url + "/5000")
 			.withJson({ code: "ABC1111" })
 			.expectStatus(204)
-			.expectJsonMatch({})
 	})
 	it("update non-existed data with existing name", async () => {
 		await spec()
 			.put(url + "/5000")
 			.withJson({ code: "AB7777" })
-			.expectStatus(204)
-			.expectJsonMatch({})
+			.expectStatus(409)
+			.expectJsonMatch({ error: "Course with name AB7777 already existed" })
 	})
 })
 
@@ -305,5 +329,18 @@ describe("DELETE", () => {
 			.delete(url + "/!/AB7777")
 			.withBody({ wipe: true })
 			.expectStatus(200)
+	})
+	it("delete non-existing course data", async () => {
+		await spec()
+			.delete(url + "/!/AB7777")
+			.expectStatus(204)
+	})
+	it("delete more than 1 course data", async () => {
+		await spec()
+			.delete(url + "/!/!/TEST3")
+			.expectStatus(204)
+		await spec()
+			.put(url + "/!/!/TEST3")
+			.withBody({ website: "" })
 	})
 })

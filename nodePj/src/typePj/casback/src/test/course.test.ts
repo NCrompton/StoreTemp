@@ -8,6 +8,7 @@ import {
 	findAllCourse,
 	checkValidParam,
 	checkDataChanges,
+	nonNullParams,
 } from "../controller/course"
 import { course, model } from "../models/init-models"
 import { Op } from "sequelize"
@@ -340,5 +341,33 @@ describe("checkDataChanges", () => {
 		})
 		const result = checkDataChanges(sample, target)
 		expect(result).toBe(true)
+	})
+})
+
+describe("nonNullParam", () => {
+	test("input 2 null parameters", () => {
+		const sample = { code: "AB6666", dept: "TEST" }
+		const result = nonNullParams(sample)
+		expect(result).toEqual({
+			code: "AB6666",
+			dept: "TEST",
+			website: "",
+			subject_area: "",
+		})
+	})
+	test("input no null parameters", () => {
+		const sample = {
+			code: "AB6666",
+			dept: "TEST",
+			website: "",
+			subject_area: "TEST",
+		}
+		const result = nonNullParams(sample)
+		expect(result).toEqual({
+			code: "AB6666",
+			dept: "TEST",
+			website: "",
+			subject_area: "TEST",
+		})
 	})
 })
