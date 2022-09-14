@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from "express"
-import { model, course_detail } from "../models/init-models"
-import { Op } from "sequelize"
+import { model, course_detail, course } from "../models/init-models"
+import { Op, DataTypes } from "sequelize"
+import { flatten } from "lodash"
 
-type CourseResponse = {
+type DataResponse = {
 	status: number
-	data: Array<course_detail>
+	data: Array<course>
 	error?: string
 }
 const _model_class = course_detail
 type _model_type = course_detail
+type _parent_type = course
 const SQL = model.course_detail
 const defaultSearch = [
 	"course_id",
@@ -39,7 +41,183 @@ export async function getCourseDetail(req: Request, res: Response) {
 	res.status(status).json(result)
 }
 
-export async function getCourseDetailById(req: Request, res: Response) {}
+export async function getCourseDetailById(req: Request, res: Response) {
+	const selectState = req.body.select ?? defaultSearch
+	let status: number = 500
+	let error: string = ""
+	if (checkIDType(req.params)) {
+		const { wherestateChild, wherestateParent } = createWhereStatement(
+			req.params
+		)
+		const result = await findAllDatafromJoin(
+			wherestateParent,
+			wherestateChild,
+			selectState
+		)
+		return res.status(result.status).json(result)
+	} else {
+		status = 400
+		error = "Invalid parameters"
+	}
+	return res.status(status).json({ status, error })
+}
+
+export async function createCourseDetail(req: Request, res: Response) {
+	const body = nonNullParams(req.body)
+
+	let status: number = 500
+	let error: string = ""
+	let data: _model_type | void
+
+	/* 
+		check if any parameters are not used 
+	*/
+	const unused: Array<{ [key: string]: string }> | boolean =
+		checkUnusedParam(body)
+	let warning: string = unused
+		? `[${unused.map(({ value }) => value)}] is not used`
+		: ""
+
+	/* check if parameter sufficient to create a new course */
+	const typeCheckFlag: boolean | string = checkAllTypes(body)
+	if (checkRequiredParam(body)) {
+		/* check the parameters type is correct */
+		if (typeof typeCheckFlag !== "string") {
+			/* check if unique parameter is unique */
+			if (await checkUniqueParam(body)) {
+				status = 201
+				data = await SQL.create(body).catch((err) => {
+					status = 500
+					error = "Unexpected Data fetching Error"
+					console.log(err)
+				})
+			} else {
+				status = 409
+				error = `Data with Code ${body.name} already existed`
+			}
+		} else {
+			status = 400
+			error = `Invalid data type for key [${typeCheckFlag}]`
+		}
+	} else {
+		status = 400
+		error = "Parameter is insufficient to create a new data"
+	}
+	return status === 201
+		? unused
+			? res.status(status).json({ status, data, warning })
+			: res.status(status).json({ status, data })
+		: res.status(status).json({ status, error })
+	//return res.status(status).json({ status, data, warning, error })
+}
+
+export async function updateCourseDetailById(req: Request, res: Response) {
+	const body: { [key: string]: any } = req.body
+	let status: number = 500
+	let error: string = ""
+	let data: Array<_model_type> = []
+	let warning: string = ""
+	const unused: Array<{ [key: string]: string }> | boolean =
+		checkUnusedParam(body)
+	const typeCheckFlag: boolean | string = checkAllTypes(body)
+	/* check if new code is unique */
+	if (await checkUniqueParam(body)) {
+		if (typeof typeCheckFlag !== "string") {
+			const { wherestateChild, wherestateParent } = Object.keys(body).includes(
+				"is_current"
+			)
+				? createWhereStatement(req.params, true)
+				: createWhereStatement(req.params)
+			const result: Array<_model_type> = await findAllDatafromJoin(
+				wherestateParent,
+				wherestateChild
+			).then((d) => flatten(d.data.map((c) => c.course_details)))
+			//fix findAllDatafromJoin
+			if (result.length === 1) {
+				if (unused) {
+					warning = `[${unused.map(({ value }) => value)}] is not used`
+				}
+				const target_item = result[0]
+				/* check if data is changed */
+				if (checkDataChanges(body, target_item)) {
+					status = 200
+					target_item.set(body)
+					const value = await target_item.save()
+					data.push(value)
+				} else {
+					status = 208
+					warning = "There are no different between new and old data"
+				}
+			} else {
+				if (result.length > 1) {
+					if (!hasUniqueParam(body)) {
+						status = 200
+						result.forEach((target_item, index) => {
+							target_item.set(body)
+							data.push(target_item)
+							target_item.save()
+						})
+					} else {
+						status = 300
+						error = "Cannot bulk update unique value"
+					}
+				} else {
+					status = 204
+					error = "No data found"
+				}
+				console.log(data.length)
+			}
+		} else {
+			/* return error if data type not match with course interface */
+			status = 400
+			error = `Invalid data type for Course [${typeCheckFlag}]`
+		}
+	} else {
+		status = 409
+		error = `Course with name ${body.code} already existed`
+	}
+
+	return status === 200
+		? unused
+			? res.status(status).json({ status, data, warning })
+			: res.status(status).json({ status, data })
+		: status === 208
+		? res.status(status).json({ status, warning })
+		: res.status(status).json({ status, error })
+}
+
+export async function deleteCourseDetailById(req: Request, res: Response) {
+	const body = req.body ?? {}
+	const wipe: boolean = body.wipe
+	let status: number = 200
+	let error: string = ""
+	let data: Array<_model_type> = []
+	const { wherestateChild, wherestateParent } = wipe
+		? createWhereStatement(req.params, true)
+		: createWhereStatement(req.params)
+	const result: Array<_model_type> = await findAllDatafromJoin(
+		wherestateParent,
+		wherestateChild
+	).then((d) => flatten(d.data.map((c) => c.course_details)))
+	console.log(result.length)
+	if (result.length > 1) {
+		status = 200
+		error = "Too many entry fit the params"
+		result.forEach((target_item, index) => {
+			target_item.set({ is_current: 0 })
+			data.push(target_item)
+			target_item.save()
+		})
+		return res.status(200).json({ status, data })
+	} else if (result.length === 0) {
+		status = 204
+	} else {
+		const target = result[0]
+		wipe ? await target.destroy() : await target.update({ is_current: 0 })
+		data.push(target)
+	}
+	return res.status(status).json({ status, data })
+}
 
 function checkUnusedParam(params: { [key: string]: any }) {
 	const list = _model_class.getAttributes()
@@ -73,14 +251,14 @@ function nonNullParams(params: { [key: string]: any }) {
 	params.medium ?? Object.assign(params, { medium: "English" })
 	params.cw_percent ??
 		Object.assign(params, { cw_percent: 100, exam_percent: 0 })
-	params.exam_duration ?? Object.assign(params, { exam_duration: 100 })
+	params.exam_duration ?? Object.assign(params, { exam_duration: 2 })
 	params.precursor ?? Object.assign(params, { precursor: "" })
 	params.prerequisite ?? Object.assign(params, { prerequisite: "" })
 	params.equivalent ?? Object.assign(params, { equivalent: "" })
 	params.exclusive ?? Object.assign(params, { exclusive: "" })
 	params.fund_mode ?? Object.assign(params, { fund_mode: "" })
-	params.cef_course ?? Object.assign(params, { cef_course: 0 })
-	params.block_transfer ?? Object.assign(params, { block_transfer: 0 })
+	params.cef_course ?? Object.assign(params, { cef_course: false })
+	params.block_transfer ?? Object.assign(params, { block_transfer: false })
 	params.remark ?? Object.assign(params, { remark: "" })
 	params.version ?? Object.assign(params, { version: 1 })
 	params.is_current ?? Object.assign(params, { is_current: 1 })
@@ -89,15 +267,19 @@ function nonNullParams(params: { [key: string]: any }) {
 	params.chort_to ?? Object.assign(params, { cohort_to: 0 })
 	params.u_name ?? Object.assign(params, { u_name: "CASback" })
 	params.r_host ?? Object.assign(params, { r_host: "CASback" })
+	//params.timestamp ?? Object.assign(params, { timestamp: DataTypes.NOW })
 	return params
 }
 
 function checkDataChanges(params: { [key: string]: any }, data: _model_type) {
 	const attributes: object = _model_class.getAttributes()
-	for (const [k, v] of Object.entries(params)) {
-		if (Object.keys(attributes).includes(k)) {
-			if (data.get(k) !== v) {
-				return true
+	const _params = params ?? {}
+	if (data !== undefined) {
+		for (const [k, v] of Object.entries(_params)) {
+			if (Object.keys(attributes).includes(k)) {
+				if (data.get(k) !== v) {
+					return true
+				}
 			}
 		}
 	}
@@ -136,28 +318,38 @@ function createWhereStatement(
 	params: { [key: string]: any },
 	restore?: boolean /* ignored active if true */
 ) {
-	let wherestate: { [key: string]: any } = {}
-	const attributes: Array<string> = ["name", "id", "course_id"]
-	for (let i of attributes) {
-		if (!(params[i] === undefined || params[i] === "!"))
-			wherestate[i] = params[i]
+	const _params = params ?? {}
+	let wherestateChild: { [key: string]: any } = {}
+	let wherestateParent: { [key: string]: any } = {}
+	const ignoreInactive: boolean = restore ?? false
+	const attributesC: Array<keyof _model_type> = [
+		"name",
+		"course_detail_id",
+		"course_id",
+		"version",
+	]
+	if (!(_params["id"] === undefined || _params["id"] === "!")) {
+		wherestateChild[id] = _params["id"]
 	}
-	/* const ignoreInactive: boolean = restore ?? false
-	params.id === "!" || Object.assign(wherestate, { course_id: params.id })
-	params.name === "!" ||
-		params.name === undefined ||
-		Object.assign(wherestate, { name: params.name })
-	params.dept === "!" ||
-		params.dept === undefined ||
-		Object.assign(wherestate, { dept: params.dept })
-	params.subject_area === "!" ||
-		params.subject_area === undefined ||
-		Object.assign(wherestate, { dept: params.subject_area })
-	/* unselect inactive entries 
-	ignoreInactive ||
-		Object.assign(wherestate, { website: { [Op.not]: "inactive" } })
- */
-	return wherestate
+	for (let i of attributesC) {
+		if (!(_params[i] === undefined || _params[i] === "!")) {
+			wherestateChild[i] = _params[i]
+		}
+	}
+	const attributesP: Array<keyof _parent_type> = [
+		"code",
+		"dept",
+		"subject_area",
+	]
+	for (let i of attributesP) {
+		if (!(_params[i] === undefined || _params[i] === "!"))
+			wherestateParent[i] = _params[i]
+	}
+	if (!ignoreInactive) {
+		Object.assign(wherestateChild, { is_current: { [Op.not]: 0 } })
+		//Object.assign(wherestateParent, { website: { [Op.not]: "inactive" } })
+	}
+	return { wherestateChild, wherestateParent }
 }
 
 function checkIDType({ id, course_id, version }: { [key: string]: string }) {
@@ -176,9 +368,7 @@ function checkIDType({ id, course_id, version }: { [key: string]: string }) {
 	return true
 }
 
-function checkAllTypes(params: {
-	[key: string]: any
-}): boolean | string | number | object {
+function checkAllTypes(params: { [key: string]: any }): boolean | string {
 	const numberList: Array<string> = [
 		"course_id",
 		"credit",
@@ -198,12 +388,14 @@ function checkAllTypes(params: {
 		"prerequisite",
 		"equivalent",
 		"exclusive",
+		"fund_mode",
+		"remark",
 		"grade_pattern",
 		"u_name",
 		"r_host",
 	]
+	const booleanList: Array<string> = ["cef_course", "block_transfer"]
 	const objectList: Array<string> = []
-	const booleanList: Array<string> = []
 	for (const [k, v] of Object.entries(params)) {
 		if (numberList.includes(k)) {
 			if (typeof v !== "number") return k
@@ -224,7 +416,7 @@ function checkAllTypes(params: {
 async function findAllData(
 	whereS?: {} | undefined,
 	selectS?: Array<string> | undefined
-): Promise<CourseResponse> {
+): Promise<DataResponse> {
 	const whereState = whereS ?? {}
 	const selectState = checkValidParam(selectS) ?? defaultSearch
 	let status: number = 200
@@ -251,18 +443,29 @@ async function findAllDatafromJoin(
 	whereParentS?: {} | undefined,
 	whereChildS?: {} | undefined,
 	selectS?: Array<string> | undefined
-) {
+): Promise<DataResponse> {
 	const whereParentState = whereParentS ?? {}
 	const whereChildState = whereChildS ?? {}
 	const selectState = checkValidParam(selectS) ?? defaultSearch
 	let status: number = 200
 	let error: string = ""
 	let data: Array<any> = []
-	const course = await model.course.findOne({
-		attributes: selectState,
-		where: whereParentState,
-	})
-	course.getCourse_details(whereChildState)
+	try {
+		const courses = await model.course.findAll({
+			where: whereParentState,
+			include: {
+				model: course_detail,
+				as: "course_details",
+				where: whereChildState,
+			},
+		})
+		courses.length === 0 ? (status = 204) : (data = courses)
+	} catch (e) {
+		status = 500
+		error = "Unexpected Data fetching Error"
+		console.log(e)
+	}
+	return status === 200 ? { data, status } : { status, error, data }
 }
 
 export {
@@ -272,4 +475,9 @@ export {
 	checkUnusedParam,
 	checkIDType,
 	checkAllTypes,
+	checkDataChanges,
+	nonNullParams,
+	checkUniqueParam,
+	hasUniqueParam,
+	checkRequiredParam,
 }

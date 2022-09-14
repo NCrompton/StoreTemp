@@ -9,11 +9,11 @@ describe("GET", () => {
 		await spec()
 			.get(url)
 			.expectStatus(200)
-			.expectJsonMatch({ data: eachLike({ code: like("CS2115") }) })
+			.expectJsonMatch({ data: eachLike({ name: like("") }) })
 	})
 	it("get specific course data with id", async () => {
 		await spec()
-			.get(url + "/64")
+			.get(url + "/14")
 			.expectStatus(200)
 			.expectJsonMatch({
 				data: [

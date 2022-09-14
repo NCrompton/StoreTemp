@@ -13,11 +13,11 @@ GET http://localhost:3002/coursedetail/20/Software%20Quality%20Management/1/19/C
 
 ### Withdraw data with join data (Course)
 
-GET http://localhost:3002/coursedetail/!/!/!/19 HTTP/1.1
+GET http://localhost:3002/coursedetail/!/!/!/!/CS2115 HTTP/1.1
 
 ### Withdraw bulk data with join data (Course.dept)
 
-GET http://localhost:3002/coursedetail/!/!/!/!/TEST HTTP/1.1
+GET http://localhost:3002/coursedetail/14/!/!/!/!/CS HTTP/1.1
 
 ### Withdraw non existing data
 
@@ -26,3 +26,169 @@ GET http://localhost:3002/coursedetail/50 HTTP/1.1
 ### Input invalid parameters
 
 GET http://localhost:3002/coursedetail/g HTTP/1.1
+
+### create coursedetail with coursedetail data in body
+POST http://localhost:3002/coursedetail/ HTTP/1.1
+content-type: application/json
+
+{
+    "course_id": 525,
+	"name": "Testing 103",
+	"credit": 3,
+	"duration": 1,
+	"level": "B10",
+	"medium": "English",
+	"cw_percent": 40,
+	"exam_duration": 2,
+	"precursor": "( MA2144 OR MA2172 )",
+	"prerequisite": "( CS2302 OR CS2303 OR CS3334 OR CS3363 OR EE3206 )",
+	"equivalent": "( IT4301 )",
+	"exclusive": "( MA2182 OR MA2183 )",
+	"version": 1,
+	"is_current": 1,
+	"grade_pattern": "Standard (A+AA-...F)",
+	"cohort_from": 2020
+}
+
+### create coursedetail with minimal coursedetail data in body
+POST http://localhost:3002/coursedetail/ HTTP/1.1
+content-type: application/json
+
+{
+    "course_id": 525,
+	"name": "Testing 102",
+	"level": "B4",
+	"cohort_from": 2020,
+    "is_current": 0
+}
+
+### create coursedetail with incorrect coursedetail attributes
+POST http://localhost:3002/coursedetail/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1238",
+    "dept": "CS",
+    "subject_areas": "CS",
+    "ridiculous": true
+}
+
+### create coursedetail without coursedetail attributes
+POST http://localhost:3002/coursedetail/ HTTP/1.1
+content-type: application/json
+
+{
+    
+}
+
+### create coursedetail with incorrect data format
+POST http://localhost:3002/coursedetail/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1234"],
+    "dept": "CS",
+    "subject_area": "CS"
+}
+
+### update coursedetail data
+
+PUT http://localhost:3002/coursedetail/667 HTTP/1.1
+content-type: application/json
+
+{
+    "level": "B8"
+}
+
+### update coursedetail data with same data 
+
+PUT http://localhost:3002/coursedetail/667 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 101"
+}
+
+### update coursedetail data with partially same data 
+
+PUT http://localhost:3002/coursedetail/436 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 101",
+    "exam_duration": 3
+}
+
+### update non-existing coursedetail data
+
+PUT http://localhost:3002/coursedetail/5000 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 102"
+}
+
+### update deleted coursedetail data
+
+PUT http://localhost:3002/coursedetail/669 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 103",
+    "is_current": 0
+}
+
+### restore inactive data
+
+PUT http://localhost:3002/coursedetail/669 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### update coursedetail data with incorrect data format
+
+PUT http://localhost:3002/coursedetail/667 HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1235"],
+    "cw_percent": "CS"
+}
+
+### update coursedetail data with more than 1 entries
+
+PUT http://localhost:3002/coursedetail/!/!/!/525 HTTP/1.1
+content-type: application/json
+
+{
+    "remark": "This is maybe not a Testing data"
+}
+
+### restore coursedetail data which is not deleted
+
+PUT http://localhost:3002/coursedetail/667 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### delete coursedetail data
+
+DELETE http://localhost:3002/coursedetail/669 HTTP/1.1
+
+### delete non existing coursedetail data
+
+DELETE http://localhost:3002/coursedetail/669 HTTP/1.1
+
+### Hard delete existing coursedetail data
+
+DELETE http://localhost:3002/coursedetail/670 HTTP/1.1
+content-type: application/json
+
+{
+    "wipe": true
+}
+
