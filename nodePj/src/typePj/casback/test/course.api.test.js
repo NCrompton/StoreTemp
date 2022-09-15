@@ -265,7 +265,7 @@ describe("PUT", () => {
 	})
 	it("bulk update unique data", async () => {
 		await spec()
-			.put(url + "/!/!/Test")
+			.put(url + "/!/!/Test3")
 			.withJson({ code: "ABC1111" })
 			.expectStatus(300)
 			.expectJsonMatch({
@@ -275,14 +275,14 @@ describe("PUT", () => {
 	it("bulk update non-unique data", async () => {
 		await spec()
 			.put(url + "/!/!/TEST3")
-			.withJson({ dept: "TEST4" })
+			.withJson({ subject_area: "TEST4" })
 			.expectStatus(200)
 			.expectJsonMatch({
 				data: [2],
 			})
 		await spec()
-			.put(url + "/!/!/TEST4")
-			.withJson({ dept: "TEST3" })
+			.put(url + "/!/!/TEST3")
+			.withJson({ subject_area: "TEST2" })
 	})
 	/* it("bulk update data code with dept", async () => {
 		await spec()
@@ -311,9 +311,9 @@ describe("PUT", () => {
 	it("update non-existed data with existing name", async () => {
 		await spec()
 			.put(url + "/5000")
-			.withJson({ code: "AB7777" })
+			.withJson({ code: "AB5555" })
 			.expectStatus(409)
-			.expectJsonMatch({ error: "Course with name AB7777 already existed" })
+			.expectJsonMatch({ error: "Course with name AB5555 already existed" })
 	})
 })
 
@@ -338,7 +338,7 @@ describe("DELETE", () => {
 	it("delete more than 1 course data", async () => {
 		await spec()
 			.delete(url + "/!/!/TEST3")
-			.expectStatus(204)
+			.expectStatus(200)
 		await spec()
 			.put(url + "/!/!/TEST3")
 			.withBody({ website: "" })

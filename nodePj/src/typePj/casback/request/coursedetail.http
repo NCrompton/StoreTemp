@@ -4,7 +4,7 @@ GET http://localhost:3002/coursedetail HTTP/1.1
 
 ### Withdraw data with specific id
 
-GET http://localhost:3002/coursedetail/20 HTTP/1.1
+GET http://localhost:3002/coursedetail/669 HTTP/1.1
 
 ### check if checkType() function correctly
 
@@ -19,6 +19,10 @@ GET http://localhost:3002/coursedetail/!/!/!/!/CS2115 HTTP/1.1
 
 GET http://localhost:3002/coursedetail/14/!/!/!/!/CS HTTP/1.1
 
+### Withdraw bulk data with course id
+
+GET http://localhost:3002/coursedetail/!/!/!/19 HTTP/1.1
+
 ### Withdraw non existing data
 
 GET http://localhost:3002/coursedetail/50 HTTP/1.1
@@ -26,6 +30,16 @@ GET http://localhost:3002/coursedetail/50 HTTP/1.1
 ### Input invalid parameters
 
 GET http://localhost:3002/coursedetail/g HTTP/1.1
+
+### get specific attribute
+
+GET http://localhost:3002/coursedetail/667 HTTP/1.1
+content-type: application/json
+
+{
+   "select": ["course_detail_id", "name", "credit", "duration", "exam_duration", "aim", "u_name"],
+   "selectParent": ["code"]
+}
 
 ### create coursedetail with coursedetail data in body
 POST http://localhost:3002/coursedetail/ HTTP/1.1
@@ -140,7 +154,7 @@ content-type: application/json
 
 ### restore inactive data
 
-PUT http://localhost:3002/coursedetail/669 HTTP/1.1
+PUT http://localhost:3002/coursedetail/!/!/!/525 HTTP/1.1
 content-type: application/json
 
 {

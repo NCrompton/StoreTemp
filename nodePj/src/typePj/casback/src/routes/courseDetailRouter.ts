@@ -13,7 +13,7 @@ const courseDetailRouter = Router()
 courseDetailRouter.get("", (req, res) => getCourseDetail(req, res))
 
 const url = "/:id/:name/:version/:course_id/:code/:dept/:subject_area"
-const urlList = createUrlList(url)
+const urlList: Array<string> = createUrlList(url)
 
 /* get */
 urlList.forEach((url) =>

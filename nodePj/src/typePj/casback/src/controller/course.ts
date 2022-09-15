@@ -165,18 +165,18 @@ export async function deleteCourse(req: Request, res: Response) {
 		? createWhereStatement(req.params, true)
 		: createWhereStatement(req.params)
 	let result = await findAllCourse(whereState)
-	if (result.data.length > 1) {
+	if (result.data.length > 1 && !wipe) {
 		status = "200"
 		error = "Too many entry fit the params"
 		data = await SQL.update({ website: "inactive" }, { where: whereState })
 		return res.status(200).json({ status, data })
-	} else if (result.status === 204) {
-		return res.json(result)
+	} else if (result.data.length === 0) {
+		return res.status(204).json({ status, error })
 	}
 
 	const target = result.data[0]
 	wipe ? await target.destroy() : await target.update({ website: "inactive" })
-	return res.json({ status: "200", data: target })
+	return res.status(200).json({ status: "200", data: target })
 }
 
 function checkUnusedParam(params: { [key: string]: any }) {

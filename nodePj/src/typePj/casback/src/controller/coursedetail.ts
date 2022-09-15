@@ -10,6 +10,7 @@ type DataResponse = {
 }
 const _model_class = course_detail
 type _model_type = course_detail
+const _parent_class = course
 type _parent_type = course
 const SQL = model.course_detail
 const defaultSearch = [
@@ -30,6 +31,13 @@ const defaultSearch = [
 	"cohort_from",
 	"cohort_to",
 ]
+const defaultSearchParent = [
+	"course_id",
+	"code",
+	"dept",
+	"website",
+	"subject_area",
+]
 type _model_partial = {
 	[P in keyof _model_type]?: _model_type[P] | null
 }
@@ -43,6 +51,7 @@ export async function getCourseDetail(req: Request, res: Response) {
 
 export async function getCourseDetailById(req: Request, res: Response) {
 	const selectState = req.body.select ?? defaultSearch
+	const selectStateParent = req.body.selectParent ?? defaultSearchParent
 	let status: number = 500
 	let error: string = ""
 	if (checkIDType(req.params)) {
@@ -52,7 +61,8 @@ export async function getCourseDetailById(req: Request, res: Response) {
 		const result = await findAllDatafromJoin(
 			wherestateParent,
 			wherestateChild,
-			selectState
+			selectState,
+			selectStateParent
 		)
 		return res.status(result.status).json(result)
 	} else {
@@ -201,22 +211,33 @@ export async function deleteCourseDetailById(req: Request, res: Response) {
 	).then((d) => flatten(d.data.map((c) => c.course_details)))
 	console.log(result.length)
 	if (result.length > 1) {
-		status = 200
-		error = "Too many entry fit the params"
-		result.forEach((target_item, index) => {
-			target_item.set({ is_current: 0 })
-			data.push(target_item)
-			target_item.save()
-		})
-		return res.status(200).json({ status, data })
+		if (wipe) {
+			status = 300
+			error = "Too many entry fit the params"
+		} else {
+			status = 200
+			result.forEach((target_item) => {
+				target_item.set({ is_current: 0 })
+				data.push(target_item)
+				target_item.save()
+			})
+		}
 	} else if (result.length === 0) {
 		status = 204
 	} else {
 		const target = result[0]
-		wipe ? await target.destroy() : await target.update({ is_current: 0 })
+		try {
+			wipe ? await target.destroy() : await target.update({ is_current: 0 })
+		} catch (err) {
+			status = 500
+			error = "Unexpected Data fetching Error"
+			console.log(err)
+		}
 		data.push(target)
 	}
-	return res.status(status).json({ status, data })
+	return status === 200
+		? res.status(status).json({ status, data })
+		: res.status(status).json({ status, error })
 }
 
 function checkUnusedParam(params: { [key: string]: any }) {
@@ -300,10 +321,13 @@ function checkValidParam(
 		| {
 				[key: string]: any
 		  }
-		| Array<string>
+		| Array<string>,
+	isParent: boolean
 ): Array<string> | undefined {
 	if (params === undefined) return undefined
-	const attributes = _model_class.getAttributes()
+	const attributes = isParent
+		? _parent_class.getAttributes()
+		: _model_class.getAttributes()
 	const paramList: Array<string> =
 		params instanceof Array<string> ? params : Object.keys(params)
 	const list = paramList
@@ -418,7 +442,7 @@ async function findAllData(
 	selectS?: Array<string> | undefined
 ): Promise<DataResponse> {
 	const whereState = whereS ?? {}
-	const selectState = checkValidParam(selectS) ?? defaultSearch
+	const selectState = checkValidParam(selectS, false) ?? defaultSearch
 	let status: number = 200
 	let error: string = ""
 	let data: Array<any> = []
@@ -442,21 +466,26 @@ async function findAllData(
 async function findAllDatafromJoin(
 	whereParentS?: {} | undefined,
 	whereChildS?: {} | undefined,
-	selectS?: Array<string> | undefined
+	selectC?: Array<string> | undefined,
+	selectP?: Array<string> | undefined
 ): Promise<DataResponse> {
 	const whereParentState = whereParentS ?? {}
 	const whereChildState = whereChildS ?? {}
-	const selectState = checkValidParam(selectS) ?? defaultSearch
+	const selectState = checkValidParam(selectC, false) ?? defaultSearch
+	const selectStateParent =
+		checkValidParam(selectP, true) ?? defaultSearchParent
 	let status: number = 200
 	let error: string = ""
 	let data: Array<any> = []
 	try {
 		const courses = await model.course.findAll({
 			where: whereParentState,
+			attributes: selectStateParent,
 			include: {
 				model: course_detail,
 				as: "course_details",
 				where: whereChildState,
+				attributes: selectState,
 			},
 		})
 		courses.length === 0 ? (status = 204) : (data = courses)
