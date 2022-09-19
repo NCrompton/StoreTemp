@@ -1,0 +1,30 @@
+<head>
+  <link rel="stylesheet" href="Templates/Styles/test.css">
+</head>
+  <h>This is a Test Page</h>
+  <table class="testTable" border>
+    <thead>
+      <td>First</td>
+      <td>Second</td>
+      <td>Third</td>
+      <td>Fourth</td>
+    </thead>
+    <tr>
+      <td>Erste</td>
+      <td>Zweite</td>
+      <td>Dritte</td>
+      <td>Vierte</td>
+    </tr>
+    <tr>
+      <td>Premiere</td>
+      <td>Deuxieme</td>
+      <td>Troisieme</td>
+      <td>Quatrieme</td>
+    </tr>
+    {% if name %}
+    <tr>
+      <td colspan="4">{{name}}</td>
+    </tr>
+    {% endif %}
+  </table>
+</link>

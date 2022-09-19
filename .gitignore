@@ -9198,3 +9198,8 @@ nodePj/src/typePj/typetest/node_modules
 nodePj/src/typePj/my-app/node_modules
 nodePj/src/typePj/casback/node_modules
 node_modules/
+java/demo/.mvn
+pythonApp/flaskTest/venv/__pycache__/
+pythonApp/flaskTest/venv/Lib
+pythonApp/flaskTest/venv/Scripts
+pythonApp/flaskTest/venv/pyvenv.cfg

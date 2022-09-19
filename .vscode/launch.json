@@ -1,65 +1,78 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        
-        {
-            "name": "Launch nodeJS Program",
-            "program": "${workspaceFolder}/login.js",
-            "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "name": "Attach by Process ID",
-            "port": 3000,
-            "processId": "${command:PickProcess}",
-            "request": "attach",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (web)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/testApp/bin/Debug/net6.0/testApp.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/testApp",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        },
-        {
-            "name": "Python Console App",
-            "type": "python",
-            "request": "launch",
-            "stopOnEntry": true,
-            "program": "${file}",
-            "env": {"PYTHONPATH": "${workspaceRoot}"},
-            "envFile": "${workspaceRoot}/.env",
-            "console":"integratedTerminal",
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch SmsApplication",
+      "request": "launch",
+      "mainClass": "com.example.sms.SmsApplication",
+      "projectName": "sms"
+    },
+    {
+      "type": "java",
+      "name": "Launch DemoApplication",
+      "request": "launch",
+      "mainClass": "src.main.java.com.example.sms.DemoApplication",
+      "projectName": "ZTEST_2412cee"
+    },
+    {
+      "type": "java",
+      "name": "Launch Application",
+      "request": "launch",
+      "mainClass": "com.example.demo.Application",
+      "projectName": "demo"
+    },
+    {
+      "name": "Launch nodeJS Program",
+      "program": "${workspaceFolder}/login.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Attach by Process ID",
+      "port": 3000,
+      "processId": "${command:PickProcess}",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/testApp/bin/Debug/net6.0/testApp.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/testApp",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    },
+    {
+      "name": "Python Console App",
+      "type": "python",
+      "request": "launch",
+      "stopOnEntry": true,
+      "program": "${file}",
+      "env": {
+        "PYTHONPATH": "${workspaceRoot}"
+      },
+      "envFile": "${workspaceRoot}/.env",
+      "console": "integratedTerminal"
+    }
+  ]
 }

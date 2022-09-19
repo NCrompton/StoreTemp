@@ -1,0 +1,21 @@
+GET http://localhost:8080/test/hoof HTTP/1.1
+content-type: application/json
+Authorization: Basic 
+
+{
+    "name": "GOOG",
+    "id": 5
+}
+
+POST http://localhost:8080/test/hoof HTTP/1.1
+content-type: application/json
+
+{
+    "name": "GOOG",
+    "id": 5
+}
+
+POST http://localhost:8080/send HTTP/1.1
+
+POST https://cap.cityu.edu.hk/sms/cityusms.asmx HTTP/1.1
+content-type: text/xml

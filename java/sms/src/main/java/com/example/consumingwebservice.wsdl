@@ -1,0 +1,254 @@
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://tempuri.org/">
+<wsdl:types>
+<s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+<s:element name="SendChiSMS">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="callerkey" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="content" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="phoneNos" type="tns:ArrayOfString"/>
+<s:element minOccurs="1" maxOccurs="1" name="arraySize" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="testOnly" type="s:boolean"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ArrayOfString">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:element name="SendChiSMSResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="SendChiSMSResult" type="s:string"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendEngSMS">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="callerkey" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="content" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="phoneNos" type="tns:ArrayOfString"/>
+<s:element minOccurs="1" maxOccurs="1" name="arraySize" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="testOnly" type="s:boolean"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendEngSMSResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="SendEngSMSResult" type="s:string"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendChiSMSwEID">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="callerkey" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="content" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="EIDs" type="tns:ArrayOfString"/>
+<s:element minOccurs="1" maxOccurs="1" name="arraySize" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="testOnly" type="s:boolean"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendChiSMSwEIDResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="SendChiSMSwEIDResult" type="s:string"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendEngSMSwEID">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="callerkey" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="content" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="EIDs" type="tns:ArrayOfString"/>
+<s:element minOccurs="1" maxOccurs="1" name="arraySize" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="testOnly" type="s:boolean"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="SendEngSMSwEIDResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="SendEngSMSwEIDResult" type="s:string"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="CheckSMSStatus">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="callerkey" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="smsID" type="s:string"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="CheckSMSStatusResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="CheckSMSStatusResult" type="tns:ArrayOfString"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+</s:schema>
+</wsdl:types>
+<wsdl:message name="SendChiSMSSoapIn">
+<wsdl:part name="parameters" element="tns:SendChiSMS"/>
+</wsdl:message>
+<wsdl:message name="SendChiSMSSoapOut">
+<wsdl:part name="parameters" element="tns:SendChiSMSResponse"/>
+</wsdl:message>
+<wsdl:message name="SendEngSMSSoapIn">
+<wsdl:part name="parameters" element="tns:SendEngSMS"/>
+</wsdl:message>
+<wsdl:message name="SendEngSMSSoapOut">
+<wsdl:part name="parameters" element="tns:SendEngSMSResponse"/>
+</wsdl:message>
+<wsdl:message name="SendChiSMSwEIDSoapIn">
+<wsdl:part name="parameters" element="tns:SendChiSMSwEID"/>
+</wsdl:message>
+<wsdl:message name="SendChiSMSwEIDSoapOut">
+<wsdl:part name="parameters" element="tns:SendChiSMSwEIDResponse"/>
+</wsdl:message>
+<wsdl:message name="SendEngSMSwEIDSoapIn">
+<wsdl:part name="parameters" element="tns:SendEngSMSwEID"/>
+</wsdl:message>
+<wsdl:message name="SendEngSMSwEIDSoapOut">
+<wsdl:part name="parameters" element="tns:SendEngSMSwEIDResponse"/>
+</wsdl:message>
+<wsdl:message name="CheckSMSStatusSoapIn">
+<wsdl:part name="parameters" element="tns:CheckSMSStatus"/>
+</wsdl:message>
+<wsdl:message name="CheckSMSStatusSoapOut">
+<wsdl:part name="parameters" element="tns:CheckSMSStatusResponse"/>
+</wsdl:message>
+<wsdl:portType name="CityUSMSSoap">
+<wsdl:operation name="SendChiSMS">
+<wsdl:input message="tns:SendChiSMSSoapIn"/>
+<wsdl:output message="tns:SendChiSMSSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMS">
+<wsdl:input message="tns:SendEngSMSSoapIn"/>
+<wsdl:output message="tns:SendEngSMSSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="SendChiSMSwEID">
+<wsdl:input message="tns:SendChiSMSwEIDSoapIn"/>
+<wsdl:output message="tns:SendChiSMSwEIDSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMSwEID">
+<wsdl:input message="tns:SendEngSMSwEIDSoapIn"/>
+<wsdl:output message="tns:SendEngSMSwEIDSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="CheckSMSStatus">
+<wsdl:input message="tns:CheckSMSStatusSoapIn"/>
+<wsdl:output message="tns:CheckSMSStatusSoapOut"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="CityUSMSSoap" type="tns:CityUSMSSoap">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="SendChiSMS">
+<soap:operation soapAction="http://tempuri.org/SendChiSMS" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMS">
+<soap:operation soapAction="http://tempuri.org/SendEngSMS" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendChiSMSwEID">
+<soap:operation soapAction="http://tempuri.org/SendChiSMSwEID" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMSwEID">
+<soap:operation soapAction="http://tempuri.org/SendEngSMSwEID" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CheckSMSStatus">
+<soap:operation soapAction="http://tempuri.org/CheckSMSStatus" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:binding name="CityUSMSSoap12" type="tns:CityUSMSSoap">
+<soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="SendChiSMS">
+<soap12:operation soapAction="http://tempuri.org/SendChiSMS" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMS">
+<soap12:operation soapAction="http://tempuri.org/SendEngSMS" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendChiSMSwEID">
+<soap12:operation soapAction="http://tempuri.org/SendChiSMSwEID" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SendEngSMSwEID">
+<soap12:operation soapAction="http://tempuri.org/SendEngSMSwEID" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CheckSMSStatus">
+<soap12:operation soapAction="http://tempuri.org/CheckSMSStatus" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="CityUSMS">
+<wsdl:port name="CityUSMSSoap" binding="tns:CityUSMSSoap">
+<soap:address location="https://cap.cityu.edu.hk/sms/cityusms.asmx"/>
+</wsdl:port>
+<wsdl:port name="CityUSMSSoap12" binding="tns:CityUSMSSoap12">
+<soap12:address location="https://cap.cityu.edu.hk/sms/cityusms.asmx"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
