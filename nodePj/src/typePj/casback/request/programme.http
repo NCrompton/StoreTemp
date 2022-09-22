@@ -1,0 +1,203 @@
+### Withdraw all course detail name and version for reference
+
+GET http://localhost:3002/programme HTTP/1.1
+
+### Withdraw data with specific id
+
+GET http://localhost:3002/programme/5 HTTP/1.1
+
+### Withdraw data with specific name
+
+GET http://localhost:3002/programme/!/Webteam%20Programme HTTP/1.1
+
+### Withdraw data with specific cohort
+
+GET http://localhost:3002/programme/!/!/!/!/!/2009 HTTP/1.1
+
+### Withdraw data with specific id
+
+GET http://localhost:3002/programme//5/Webteam%20Programme/BSCWT/WT/Full%20Time/2009 HTTP/1.1
+
+### Withdraw bulk data
+
+GET http://localhost:3002/programme/!/!/!/TEST HTTP/1.1
+
+### Withdraw non existing data
+
+GET http://localhost:3002/programme/50 HTTP/1.1
+
+### Input invalid parameters
+
+GET http://localhost:3002/programme/g HTTP/1.1
+
+### get specific attribute
+
+GET http://localhost:3002/programme/5 HTTP/1.1
+content-type: application/json
+
+{
+   "select": ["programme_id", "name", "award_title", "code", "alias", "dept", "cohort"]
+}
+
+### create programme with programme data in body
+POST http://localhost:3002/programme/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing Programme 3",
+    "award_title": "Testing Programme 3",
+    "code": "Test3",
+    "alias": "Test3",
+    "mode": "Test",
+    "dept": "TESTC",
+    "fund_mode": "TEST",
+    "intake": 0,
+    "cohort": 1492
+}
+
+### create programme with minimal programme data in body
+POST http://localhost:3002/programme/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing Programme 3",
+    "award_title": "Testing Programme 3",
+    "code": "Test3",
+    "alias": "Test3",
+    "mode": "Test",
+    "cohort": 1492
+}
+
+### create programme with incorrect programme attributes
+POST http://localhost:3002/programme/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1238",
+    "dept": "CS",
+    "subject_areas": "CS",
+    "ridiculous": true
+}
+
+### create programme without programme attributes
+POST http://localhost:3002/programme/ HTTP/1.1
+content-type: application/json
+
+{
+    
+}
+
+### create programme with incorrect data format
+POST http://localhost:3002/programme/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing Programme 3",
+    "award_title": "Testing Programme 3",
+    "code": "Test3",
+    "alias": "Test3",
+    "mode": "Test",
+    "cohort": "1492"
+}
+
+### update programme data
+
+PUT http://localhost:3002/programme/69 HTTP/1.1
+content-type: application/json
+
+{
+    "dept": "TESTM"
+}
+
+### update programme data with same data 
+
+PUT http://localhost:3002/programme/69 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing Programme 3"
+}
+
+### update programme data with partially same data 
+
+PUT http://localhost:3002/programme/!/!/!/TEST HTTP/1.1
+content-type: application/json
+
+{
+    "intake": 0,
+    "fund_mode": "CHANGE"
+}
+
+### update non-existing programme data
+
+PUT http://localhost:3002/programme/5000 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 102"
+}
+
+### update deleted programme data
+
+PUT http://localhost:3002/programme/669 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 103",
+    "is_current": 0
+}
+
+### restore inactive data
+
+PUT http://localhost:3002/programme/!/!/!/525 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### update programme data with incorrect data format
+
+PUT http://localhost:3002/programme/667 HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1235"],
+    "cw_percent": "CS"
+}
+
+### update programme data with more than 1 entries
+
+PUT http://localhost:3002/programme/!/!/!/525 HTTP/1.1
+content-type: application/json
+
+{
+    "remark": "This is maybe not a Testing data"
+}
+
+### restore programme data which is not deleted
+
+PUT http://localhost:3002/programme/667 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### delete programme data
+
+DELETE http://localhost:3002/programme/69 HTTP/1.1
+
+### delete non existing programme data
+
+DELETE http://localhost:3002/programme/5000 HTTP/1.1
+
+### Hard delete existing programme data
+
+DELETE http://localhost:3002/programme/80 HTTP/1.1
+content-type: application/json
+
+{
+    "wipe": false
+}
+

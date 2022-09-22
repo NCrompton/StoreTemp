@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express"
+import { Request, Response } from "express"
 import { model, course_detail, course } from "../models/init-models"
-import { Op, DataTypes } from "sequelize"
+import { Op } from "sequelize"
 import { flatten } from "lodash"
 
 type DataResponse = {
@@ -73,7 +73,7 @@ export async function getCourseDetailById(req: Request, res: Response) {
 }
 
 export async function createCourseDetail(req: Request, res: Response) {
-	const body = nonNullParams(req.body)
+	const body = req.body
 
 	let status: number = 500
 	let error: string = ""
@@ -95,8 +95,9 @@ export async function createCourseDetail(req: Request, res: Response) {
 		if (typeof typeCheckFlag !== "string") {
 			/* check if unique parameter is unique */
 			if (await checkUniqueParam(body)) {
+				const newData = nonNullParams(body) 
 				status = 201
-				data = await SQL.create(body).catch((err) => {
+				data = await SQL.create(newData).catch((err) => {
 					status = 500
 					error = "Unexpected Data fetching Error"
 					console.log(err)
@@ -464,8 +465,8 @@ async function findAllData(
 }
 
 async function findAllDatafromJoin(
-	whereParentS?: {} | undefined,
-	whereChildS?: {} | undefined,
+	whereParentS: {} | undefined,
+	whereChildS: {} | undefined,
 	selectC?: Array<string> | undefined,
 	selectP?: Array<string> | undefined
 ): Promise<DataResponse> {

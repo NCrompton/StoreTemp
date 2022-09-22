@@ -1,6 +1,7 @@
 from glob import escape
 from flask import Flask, render_template, request, make_response
 import json
+import scrap
 
 app = Flask(__name__)
 
@@ -33,4 +34,13 @@ def api_test(para):
     else:
         res["None"] = True
     res["code"] = para
+    res = scrap.createJsonTemplate([], "")
     return res
+
+@app.route("/api/scholar/find/<name>", methods=['GET'])
+def api_scholar(name):
+    url = f"https://scholars.cityu.edu.hk/en/publications/{name}.html"
+    output = scrap.get_scholar_list(url)
+    resp = make_response(output, output["status"])
+    resp.content_type = "application/json"
+    return resp

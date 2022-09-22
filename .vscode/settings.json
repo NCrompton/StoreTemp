@@ -8,12 +8,14 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  //"editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnPaste": false, // required
   "editor.formatOnType": false, // required
   "editor.formatOnSave": true, // optional
   "editor.formatOnSaveMode": "file", // required to format on save
   "files.autoSave": "onFocusChange",
   "java.configuration.updateBuildConfiguration": "automatic",
-  "java.project.sourcePaths": ["java/smssys"]
+  "java.project.sourcePaths": ["java/smssys"],
+  "prettier.trailingComma": "es5",
+  "prettier.semi": false
 }
