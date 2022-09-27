@@ -10,8 +10,6 @@ import {
 
 const programRouter = Router()
 
-programRouter.get("", (req, res) => getAllProgram(req, res))
-
 const url = "/:programme_id/:name/:code/:dept/:mode/:cohort"
 ;("/:geeignet/:gebieten/:errichten/:einnehmen/:dulden/:aufbluhen/:subject_area")
 const urlList: Array<string> = createUrlList(url)

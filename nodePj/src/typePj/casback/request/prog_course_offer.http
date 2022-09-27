@@ -1,0 +1,200 @@
+### WiGETthdraw all course detail name and version for reference
+
+GET http://localhost:3002/prog_course HTTP/1.1
+
+### Withdraw data with specific id
+
+GET http://localhost:3002/prog_course/77 HTTP/1.1
+
+### Withdraw data with specific name
+
+GET http://localhost:3002/prog_course/!/58 HTTP/1.1
+
+### Withdraw data with specific cohort
+
+GET http://localhost:3002/prog_course/!/!/!/!/!/2009 HTTP/1.1
+
+### Withdraw data with specific id
+
+GET http://localhost:3002/prog_course/77/58/105/A/Minor%20in%20Computing/MINOR/%20/CS2161/CS/ HTTP/1.1
+
+### Withdraw bulk data
+
+GET http://localhost:3002/prog_course/!/!/!/TEST HTTP/1.1
+
+### Withdraw non existing data
+
+GET http://localhost:3002/prog_course/50 HTTP/1.1
+
+### Input invalid parameters
+
+GET http://localhost:3002/prog_course/g HTTP/1.1
+
+### get specific attribute
+
+GET http://localhost:3002/prog_course/5 HTTP/1.1
+content-type: application/json
+
+{
+   "select": ["programme_id", "name", "award_title", "code", "alias", "dept", "cohort"]
+}
+
+### create prog_course with prog_course data in body
+POST http://localhost:3002/prog_course/ HTTP/1.1
+content-type: application/json
+
+{
+	"programme_id": 69,
+	"course_id": 525,
+	"unit_remark": "Unit Test",
+	"prerequisite_remark": "Pre Test",
+	"offered_sem": "TestingM",
+	"remark": "Test Data"
+}
+
+### create prog_course with minimal prog_course data in body
+POST http://localhost:3002/prog_course/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing prog_course 3",
+    "award_title": "Testing prog_course 3",
+    "code": "Test3",
+    "alias": "Test3",
+    "mode": "Test",
+    "cohort": 1492
+}
+
+### create prog_course with incorrect prog_course attributes
+POST http://localhost:3002/prog_course/ HTTP/1.1
+content-type: application/json
+
+{
+    "code": "CS1238",
+    "dept": "CS",
+    "subject_areas": "CS",
+    "ridiculous": true
+}
+
+### create prog_course without prog_course attributes
+POST http://localhost:3002/prog_course/ HTTP/1.1
+content-type: application/json
+
+{
+    
+}
+
+### create prog_course with incorrect data format
+POST http://localhost:3002/prog_course/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing prog_course 3",
+    "award_title": "Testing prog_course 3",
+    "code": "Test3",
+    "alias": "Test3",
+    "mode": "Test",
+    "cohort": "1492"
+}
+
+### update prog_course data
+
+PUT http://localhost:3002/prog_course/216 HTTP/1.1
+content-type: application/json
+
+{
+    "unit_remark": "Unit Test"
+}
+
+### update prog_course data with same data 
+
+PUT http://localhost:3002/prog_course/69 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing prog_course 3"
+}
+
+### update prog_course data with partially same data 
+
+PUT http://localhost:3002/prog_course/!/!/!/TEST HTTP/1.1
+content-type: application/json
+
+{
+    "intake": 0,
+    "fund_mode": "CHANGE"
+}
+
+### update non-existing prog_course data
+
+PUT http://localhost:3002/prog_course/5000 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 102"
+}
+
+### update deleted prog_course data
+
+PUT http://localhost:3002/prog_course/669 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing 103",
+    "is_current": 0
+}
+
+### restore inactive data
+
+PUT http://localhost:3002/prog_course/!/!/!/525 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### update prog_course data with incorrect data format
+
+PUT http://localhost:3002/prog_course/667 HTTP/1.1
+content-type: application/json
+
+{
+    "code": ["CS1235"],
+    "cw_percent": "CS"
+}
+
+### update prog_course data with more than 1 entries
+
+PUT http://localhost:3002/prog_course/!/!/!/525 HTTP/1.1
+content-type: application/json
+
+{
+    "remark": "This is maybe not a Testing data"
+}
+
+### restore prog_course data which is not deleted
+
+PUT http://localhost:3002/prog_course/667 HTTP/1.1
+content-type: application/json
+
+{
+    "is_current": 1
+}
+
+### delete prog_course data
+
+DELETE http://localhost:3002/prog_course/69 HTTP/1.1
+
+### delete non existing prog_course data
+
+DELETE http://localhost:3002/prog_course/5000 HTTP/1.1
+
+### Hard delete existing prog_course data
+
+DELETE http://localhost:3002/prog_course/80 HTTP/1.1
+content-type: application/json
+
+{
+    "wipe": false
+}
+

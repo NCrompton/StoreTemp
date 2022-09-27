@@ -16,6 +16,9 @@ export function checkDataChanges(attributes: {}, params: { [key: string]: any },
 		for (const [k, v] of Object.entries(_params)) {
 			if (Object.keys(attributes).includes(k)) {
 				if (data.get(k) !== v) {
+					console.log(k)
+					console.log(data.get(k))
+					console.log(v)
 					return true
 				}
 			}

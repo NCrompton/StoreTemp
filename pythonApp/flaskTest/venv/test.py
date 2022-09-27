@@ -5,8 +5,8 @@ import scrap
 
 app = Flask(__name__)
 
-@app.route("/<name>", methods=['POST'])
-def hello_world(name):
+@app.route("/<paperId>", methods=['POST'])
+def hello_world(paperId):
     res = '<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">\n<soap:Body>\n<SendEngSMSResponse xmlns="http://tempuri.org/">\n<SendEngSMSResult>string</SendEngSMSResult>\n</SendEngSMSResponse>\n</soap:Body>\n</soap:Envelope>'
     print(f"<p>{request.headers}</p><p>{request.get_data(as_text=True)}</p>")
     resp = make_response(res, 200)
@@ -14,15 +14,15 @@ def hello_world(name):
     resp.headers['Content-Length'] = res.__len__
     return resp
     """ if(request.form['user']):
-        return f"<p>{request.form['user']}</p><p>{name}</p>"
+        return f"<p>{request.form['user']}</p><p>{paperId}</p>"
     elif request.args.get('key', ''):
-        return f"<p>{request.arg.get('key', '')}</p><p>{name}</p>"
+        return f"<p>{request.arg.get('key', '')}</p><p>{paperId}</p>"
     else:
-        return f"<p>form doesnt exist in {name}</p>" """
+        return f"<p>form doesnt exist in {paperId}</p>" """
 
 @app.route("/<word>", methods=['GET'])
 def hello_earth(word):
-    return render_template("test.html", name=word)
+    return render_template("test.html", paperId=word)
 
 @app.route("/api/<para>", methods=['POST'])
 def api_test(para):
@@ -37,9 +37,9 @@ def api_test(para):
     res = scrap.createJsonTemplate([], "")
     return res
 
-@app.route("/api/scholar/find/<name>", methods=['GET'])
-def api_scholar(name):
-    url = f"https://scholars.cityu.edu.hk/en/publications/{name}.html"
+@app.route("/api/scholar/v1/<paperId>", methods=['GET'])
+def api_scholar(paperId):
+    url = f"https://scholars.cityu.edu.hk/en/publications/{paperId}.html"
     output = scrap.get_scholar_list(url)
     resp = make_response(output, output["status"])
     resp.content_type = "application/json"

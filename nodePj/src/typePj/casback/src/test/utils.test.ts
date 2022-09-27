@@ -1,5 +1,10 @@
-import { createUrlList, } from "../utils/utils"
-import { checkValidParam, checkDataChanges, checkUnusedParam, util_checkAllType } from "../utils/validator"
+import { createUrlList } from "../utils/utils"
+import {
+	checkValidParam,
+	checkDataChanges,
+	checkUnusedParam,
+	util_checkAllType,
+} from "../utils/validator"
 import { describe, expect, test, jest } from "@jest/globals"
 import { course_detail, programme, model } from "../models/init-models"
 
@@ -136,7 +141,11 @@ describe("checkDataChanges", () => {
 		expect(result).toEqual(true)
 	})
 	test("1 different data (programme)", async () => {
-		const sample = { programme_id: 1, name: "Bachelor of Science with Honours in Computer Science", code: "BSVVW" }
+		const sample = {
+			programme_id: 1,
+			name: "Bachelor of Science with Honours in Computer Science",
+			code: "BSVVW",
+		}
 		const data = await modelSample_pg
 		const result = checkDataChanges(pg_attributes, sample, data)
 		expect(result).toEqual(true)
@@ -222,21 +231,27 @@ describe("util_checkAllType", () => {
 	]
 	const booleanList: Array<string> = ["cef_course", "block_transfer"]
 	const objectList: Array<string> = []
-	const allList = {numberList, stringList, booleanList, objectList}
+	const nullList: Array<string> = []
+	const allList = { numberList, stringList, booleanList, objectList, nullList }
 	test("normalTest", () => {
-		const samples = {course_id: 12, name: "sample", cef_course: true, duration: 3, remark: ""}
+		const samples = { course_id: 12, name: "sample", cef_course: true, duration: 3, remark: "" }
 		const result = util_checkAllType(allList, samples)
 		expect(result).toBe(true)
 	})
 	test("normalTest", () => {
-		const samples = {course_id: "12", name: "sample", cef_course: true, duration: 3, remark: ""}
+		const samples = {
+			course_id: "12",
+			name: "sample",
+			cef_course: true,
+			duration: 3,
+			remark: "",
+		}
 		const result = util_checkAllType(allList, samples)
 		expect(result).toEqual("course_id")
 	})
 	test("normalTest", () => {
-		const samples = {course_id: 12, name: 12, cef_course: 3, duration: 3, remark: ""}
+		const samples = { course_id: 12, name: 12, cef_course: 3, duration: 3, remark: "" }
 		const result = util_checkAllType(allList, samples)
 		expect(result).toEqual("name")
 	})
 })
-
