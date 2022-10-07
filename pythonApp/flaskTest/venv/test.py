@@ -40,7 +40,7 @@ def api_test(para):
 @app.route("/api/scholar/v1/<paperId>", methods=['GET'])
 def api_scholar(paperId):
     url = f"https://scholars.cityu.edu.hk/en/publications/{paperId}.html"
-    output = scrap.get_scholar_list(url)
-    resp = make_response(output, output["status"])
+    output = scrap.create_scholar(url)
+    resp = make_response(output)
     resp.content_type = "application/json"
     return resp

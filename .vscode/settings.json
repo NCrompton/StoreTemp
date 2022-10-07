@@ -17,5 +17,7 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.project.sourcePaths": ["java/smssys"],
   "prettier.trailingComma": "es5",
-  "prettier.semi": false
+  "prettier.semi": false,
+  "python.formatting.provider": "none",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

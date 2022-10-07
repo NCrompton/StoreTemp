@@ -9203,3 +9203,6 @@ pythonApp/flaskTest/venv/__pycache__/
 pythonApp/flaskTest/venv/Lib
 pythonApp/flaskTest/venv/Scripts
 pythonApp/flaskTest/venv/pyvenv.cfg
+nodePj/src/vuePj/backend/.env
+nodePj/src/vuePj/backend/node_modules
+nodePj/src/vuePj/frontend/node_modules
