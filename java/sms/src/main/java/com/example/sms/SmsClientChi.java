@@ -12,17 +12,17 @@ import java.util.Arrays;
 import javax.xml.soap.*;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
 
-import com.example.consumingwebservice.wsdl.SendEngSMS;
-import com.example.consumingwebservice.wsdl.SendEngSMSResponse;
+import com.example.consumingwebservice.wsdl.SendChiSMS;
+import com.example.consumingwebservice.wsdl.SendChiSMSResponse;
 import com.example.consumingwebservice.wsdl.ArrayOfString;
 
 @Component
-public class SmsClient extends WebServiceGatewaySupport {
+public class SmsClientChi extends WebServiceGatewaySupport {
 
-    private static final Logger log = LoggerFactory.getLogger(SmsClient.class);
+    private static final Logger log = LoggerFactory.getLogger(SmsClientChi.class);
 
-    public SendEngSMSResponse sendSms(String content, String callerApi, String[] phones, boolean isTest) {
-        SendEngSMS request = new SendEngSMS();
+    public SendChiSMSResponse sendSms(String content, String callerApi, String[] phones, boolean isTest) {
+        SendChiSMS request = new SendChiSMS();
         ArrayOfString phoneNos = new ArrayOfString();
         phoneNos.getString().addAll(Arrays.asList(phones));
         request.setContent(content);
@@ -32,10 +32,10 @@ public class SmsClient extends WebServiceGatewaySupport {
         request.setArraySize(phoneNos.getString().size());
         request.setTestOnly(isTest);
         log.info("sending SMS to " + request.getPhoneNos().getString());
-        log.info(String.format("with message {%s}", request.getContent()));
+        log.info(String.format("with Chinese message {%s}", request.getContent()));
 
-        SendEngSMSResponse response = (SendEngSMSResponse) getWebServiceTemplate().marshalSendAndReceive(
-                "https://cap.cityu.edu.hk/sms/cityusms.asmx",
+        SendChiSMSResponse response = (SendChiSMSResponse) getWebServiceTemplate().marshalSendAndReceive(
+                /* "https://cap.cityu.edu.hk/sms/cityusms.asmx", */"http://localhost:5000/s",
                 request, new WebServiceMessageCallback() {
 
                     @Override
@@ -50,15 +50,15 @@ public class SmsClient extends WebServiceGatewaySupport {
                             SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
 
                             soapMessage.saveChanges();
-                            saajSoapMessage.setSoapAction("http://tempuri.org/SendEngSMS");
+                            saajSoapMessage.setSoapAction("http://tempuri.org/SendChiSMS");
 
                         } catch (Exception e) {
                             throw new RuntimeException("TokenHeaderRequestCallback", e);
                         }
                     }
                 });
-        log.info("The sms id is " + response.getSendEngSMSResult());
-        if (response.getSendEngSMSResult().isEmpty()) {
+        log.info("The sms id is " + response.getSendChiSMSResult());
+        if (response.getSendChiSMSResult().isEmpty()) {
             log.info("Request may encounter an error and cannot be sent / received");
         }
 

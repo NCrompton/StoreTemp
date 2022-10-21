@@ -1,5 +1,5 @@
 class ScholarPaper:
-    def __init__(self, title, scholar_list, pages, publish_status, permanent_link, doi, orcid = None):
+    def __init__(self, title, scholar_list, pages, publish_status, permanent_link, doi, orcid):
         self.scholar_list = scholar_list
         self.title = title
         self.pages = pages

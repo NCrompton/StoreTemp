@@ -31,13 +31,7 @@ const defaultSearch = [
 	"cohort_from",
 	"cohort_to",
 ]
-const defaultSearchParent = [
-	"course_id",
-	"code",
-	"dept",
-	"website",
-	"subject_area",
-]
+const defaultSearchParent = ["course_id", "code", "dept", "website", "subject_area"]
 type _model_partial = {
 	[P in keyof _model_type]?: _model_type[P] | null
 }
@@ -55,9 +49,7 @@ export async function getCourseDetailById(req: Request, res: Response) {
 	let status: number = 500
 	let error: string = ""
 	if (checkIDType(req.params)) {
-		const { wherestateChild, wherestateParent } = createWhereStatement(
-			req.params
-		)
+		const { wherestateChild, wherestateParent } = createWhereStatement(req.params)
 		const result = await findAllDatafromJoin(
 			wherestateParent,
 			wherestateChild,
@@ -82,11 +74,8 @@ export async function createCourseDetail(req: Request, res: Response) {
 	/* 
 		check if any parameters are not used 
 	*/
-	const unused: Array<{ [key: string]: string }> | boolean =
-		checkUnusedParam(body)
-	let warning: string = unused
-		? `[${unused.map(({ value }) => value)}] is not used`
-		: ""
+	const unused: Array<{ [key: string]: string }> | boolean = checkUnusedParam(body)
+	let warning: string = unused ? `[${unused.map(({ value }) => value)}] is not used` : ""
 
 	/* check if parameter sufficient to create a new course */
 	const typeCheckFlag: boolean | string = checkAllTypes(body)
@@ -95,7 +84,7 @@ export async function createCourseDetail(req: Request, res: Response) {
 		if (typeof typeCheckFlag !== "string") {
 			/* check if unique parameter is unique */
 			if (await checkUniqueParam(body)) {
-				const newData = nonNullParams(body) 
+				const newData = nonNullParams(body)
 				status = 201
 				data = await SQL.create(newData).catch((err) => {
 					status = 500
@@ -128,15 +117,12 @@ export async function updateCourseDetailById(req: Request, res: Response) {
 	let error: string = ""
 	let data: Array<_model_type> = []
 	let warning: string = ""
-	const unused: Array<{ [key: string]: string }> | boolean =
-		checkUnusedParam(body)
+	const unused: Array<{ [key: string]: string }> | boolean = checkUnusedParam(body)
 	const typeCheckFlag: boolean | string = checkAllTypes(body)
 	/* check if new code is unique */
 	if (await checkUniqueParam(body)) {
 		if (typeof typeCheckFlag !== "string") {
-			const { wherestateChild, wherestateParent } = Object.keys(body).includes(
-				"is_current"
-			)
+			const { wherestateChild, wherestateParent } = Object.keys(body).includes("is_current")
 				? createWhereStatement(req.params, true)
 				: createWhereStatement(req.params)
 			const result: Array<_model_type> = await findAllDatafromJoin(
@@ -271,8 +257,7 @@ function nonNullParams(params: { [key: string]: any }) {
 	params.credit ?? Object.assign(params, { credit: 3 })
 	params.duration ?? Object.assign(params, { duration: 1 })
 	params.medium ?? Object.assign(params, { medium: "English" })
-	params.cw_percent ??
-		Object.assign(params, { cw_percent: 100, exam_percent: 0 })
+	params.cw_percent ?? Object.assign(params, { cw_percent: 100, exam_percent: 0 })
 	params.exam_duration ?? Object.assign(params, { exam_duration: 2 })
 	params.precursor ?? Object.assign(params, { precursor: "" })
 	params.prerequisite ?? Object.assign(params, { prerequisite: "" })
@@ -284,8 +269,7 @@ function nonNullParams(params: { [key: string]: any }) {
 	params.remark ?? Object.assign(params, { remark: "" })
 	params.version ?? Object.assign(params, { version: 1 })
 	params.is_current ?? Object.assign(params, { is_current: 1 })
-	params.grade_pattern ??
-		Object.assign(params, { grade_pattern: "Standard (A+AA-...F)" })
+	params.grade_pattern ?? Object.assign(params, { grade_pattern: "Standard (A+AA-...F)" })
 	params.chort_to ?? Object.assign(params, { cohort_to: 0 })
 	params.u_name ?? Object.assign(params, { u_name: "CASback" })
 	params.r_host ?? Object.assign(params, { r_host: "CASback" })
@@ -326,11 +310,8 @@ function checkValidParam(
 	isParent: boolean
 ): Array<string> | undefined {
 	if (params === undefined) return undefined
-	const attributes = isParent
-		? _parent_class.getAttributes()
-		: _model_class.getAttributes()
-	const paramList: Array<string> =
-		params instanceof Array<string> ? params : Object.keys(params)
+	const attributes = isParent ? _parent_class.getAttributes() : _model_class.getAttributes()
+	const paramList: Array<string> = params instanceof Array<string> ? params : Object.keys(params)
 	const list = paramList
 		?.map((m: string) => {
 			if (m in attributes) return m
@@ -361,14 +342,9 @@ function createWhereStatement(
 			wherestateChild[i] = _params[i]
 		}
 	}
-	const attributesP: Array<keyof _parent_type> = [
-		"code",
-		"dept",
-		"subject_area",
-	]
+	const attributesP: Array<keyof _parent_type> = ["code", "dept", "subject_area"]
 	for (let i of attributesP) {
-		if (!(_params[i] === undefined || _params[i] === "!"))
-			wherestateParent[i] = _params[i]
+		if (!(_params[i] === undefined || _params[i] === "!")) wherestateParent[i] = _params[i]
 	}
 	if (!ignoreInactive) {
 		Object.assign(wherestateChild, { is_current: { [Op.not]: 0 } })
@@ -473,8 +449,7 @@ async function findAllDatafromJoin(
 	const whereParentState = whereParentS ?? {}
 	const whereChildState = whereChildS ?? {}
 	const selectState = checkValidParam(selectC, false) ?? defaultSearch
-	const selectStateParent =
-		checkValidParam(selectP, true) ?? defaultSearchParent
+	const selectStateParent = checkValidParam(selectP, true) ?? defaultSearchParent
 	let status: number = 200
 	let error: string = ""
 	let data: Array<any> = []

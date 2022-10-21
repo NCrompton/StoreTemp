@@ -1,0 +1,11 @@
+FROM python:3.8-alpine
+
+WORKDIR /app
+
+RUN python3 -m venv /app
+RUN /app/bin/activate
+RUN pip install Flask
+
+COPY . /app
+
+ENTRYPOINT ["python"]

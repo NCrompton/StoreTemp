@@ -9,6 +9,7 @@ app = Flask(__name__)
 def hello_world(paperId):
     res = '<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">\n<soap:Body>\n<SendEngSMSResponse xmlns="http://tempuri.org/">\n<SendEngSMSResult>string</SendEngSMSResult>\n</SendEngSMSResponse>\n</soap:Body>\n</soap:Envelope>'
     print(f"<p>{request.headers}</p><p>{request.get_data(as_text=True)}</p>")
+    print(request.get_data(as_text=True))
     resp = make_response(res, 200)
     resp.headers['Content-Type'] = 'text/xml; charset=utf-8'
     resp.headers['Content-Length'] = res.__len__
@@ -40,7 +41,19 @@ def api_test(para):
 @app.route("/api/scholar/v1/<paperId>", methods=['GET'])
 def api_scholar(paperId):
     url = f"https://scholars.cityu.edu.hk/en/publications/{paperId}.html"
-    output = scrap.create_scholar(url)
+    orcid = None
+    if request.is_json: 
+        print(request.get_json()["orcid"])
+        orcid = request.get_json()["orcid"]
+    output = scrap.create_scholar(url, orcid)
+    resp = make_response(output)
+    resp.content_type = "application/json"
+    return resp
+
+@app.route("/api/orcid/v1/<orcid>", methods=['GET'])
+def api_orcid(orcid):
+    #url = f"https://orcid.org/{orcid}/public-record.json"
+    output = scrap.create_orcid(orcid)
     resp = make_response(output)
     resp.content_type = "application/json"
     return resp

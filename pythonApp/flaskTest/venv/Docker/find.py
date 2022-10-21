@@ -1,10 +1,6 @@
 import re
 import requests
 
-RETEXT = re.compile(r'<.*?[\s>]')
-#CLASS = re.compile(r'Pages.*?\/td')
-CONTENT = re.compile(r'>.*?<')
-
 def get_substring_from_tag(page, target):
     text = page
     CLASS = re.compile(f'{target}.*?\/td>')
@@ -84,8 +80,8 @@ def page_exist(page):
 
 def get_orcid(orcid):
     res = requests.get(f"https://orcid.org/{orcid}/public-record.json")
-    
-    if res.headers['Content-Type'] == 'text/html':
+
+    if res.headers['Content-Type'] != 'text/html':
         if(res.status_code == 200):
             page = res.json()
             return (page["displayName"])
@@ -99,4 +95,3 @@ def get_orcid(orcid):
 #get_paper_title("https://scholars.cityu.edu.hk/en/publications/enhancing-cryptocurrency-blocklisting(8c5faa1d-7d37-45cf-ac02-11c21094a543).html")
 #get_scholar_list("https://scholars.cityu.edu.hk/en/publications/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4).html")
 #print(get_orcid("0000-0003-0547-315X"))
-#page_exist("https://scholars.cityu.edu.hk/en/publications/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4).html")

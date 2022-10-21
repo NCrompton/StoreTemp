@@ -1,0 +1,21 @@
+2022-10-21 09:40:40.534  INFO 31708 --- [main] com.example.sms.SmsApplicationTests      : Starting SmsApplicationTests using Java 1.8.0_202 on cs036134 with PID 31708 (started by mhtsui9 in C:\Users\Public\Documents\ZTEST\java\sms)
+2022-10-21 09:40:40.544  INFO 31708 --- [main] com.example.sms.SmsApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2022-10-21 09:40:41.879  INFO 31708 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$e45da24d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-10-21 09:40:41.996  INFO 31708 --- [main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2022-10-21 09:40:42.172  INFO 31708 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:40:42.192  INFO 31708 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:40:43.576  INFO 31708 --- [main] com.example.sms.SmsApplicationTests      : Started SmsApplicationTests in 3.491 seconds (JVM running for 5.141)
+2022-10-21 09:42:04.284  INFO 1584 --- [main] com.example.sms.SmsApplicationTests      : Starting SmsApplicationTests using Java 1.8.0_202 on cs036134 with PID 1584 (started by mhtsui9 in C:\Users\Public\Documents\ZTEST\java\sms)
+2022-10-21 09:42:04.287  INFO 1584 --- [main] com.example.sms.SmsApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2022-10-21 09:42:05.210  INFO 1584 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$99bfedf4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-10-21 09:42:05.327  INFO 1584 --- [main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2022-10-21 09:42:05.464  INFO 1584 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:42:05.480  INFO 1584 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:42:06.660  INFO 1584 --- [main] com.example.sms.SmsApplicationTests      : Started SmsApplicationTests in 2.8 seconds (JVM running for 4.518)
+2022-10-21 09:42:46.546  INFO 20612 --- [main] com.example.sms.SmsApplicationTests      : Starting SmsApplicationTests using Java 1.8.0_202 on cs036134 with PID 20612 (started by mhtsui9 in C:\Users\Public\Documents\ZTEST\java\sms)
+2022-10-21 09:42:46.549  INFO 20612 --- [main] com.example.sms.SmsApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2022-10-21 09:42:47.498  INFO 20612 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$e50b34d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-10-21 09:42:47.581  INFO 20612 --- [main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2022-10-21 09:42:47.693  INFO 20612 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:42:47.710  INFO 20612 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2022-10-21 09:42:48.975  INFO 20612 --- [main] com.example.sms.SmsApplicationTests      : Started SmsApplicationTests in 2.855 seconds (JVM running for 4.544)

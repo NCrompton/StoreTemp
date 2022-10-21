@@ -1,0 +1,91 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:40:30] "GET /api/orcid/v1/0000-0003-0547-315X HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:40:33] "GET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+ERROR:router:Exception on /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) [GET]
+Traceback (most recent call last):
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\router.py", line 34, in api_scholar
+    app.logger.handle("%s is being called", url)
+TypeError: Logger.handle() takes 2 positional arguments but 3 were given
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:47:28] "[35m[1mGET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1[0m" 500 -
+ERROR:router:Exception on /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) [GET]
+Traceback (most recent call last):
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\router.py", line 34, in api_scholar
+    app.logger.handle("%s is being called", url)
+TypeError: Logger.handle() takes 2 positional arguments but 3 were given
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:47:35] "[35m[1mGET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+ERROR:router:Exception on /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) [GET]
+Traceback (most recent call last):
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\router.py", line 34, in api_scholar
+    app.logger.handle(f"{url} is being called")
+  File "C:\Users\mhtsui9\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1634, in handle
+    self.callHandlers(record)
+  File "C:\Users\mhtsui9\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1695, in callHandlers
+    if record.levelno >= hdlr.level:
+AttributeError: 'str' object has no attribute 'levelno'
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:48:24] "[35m[1mGET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:49:38] "GET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:52:38] "GET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:53:12] "GET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+ERROR:router:Exception on /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) [GET]
+Traceback (most recent call last):
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\Public\Documents\ZTEST\pythonApp\flaskTest\venv\router.py", line 34, in api_scholar
+    logging.log("%s is being called", url)
+  File "C:\Users\mhtsui9\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 2158, in log
+    root.log(level, msg, *args, **kwargs)
+  File "C:\Users\mhtsui9\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1543, in log
+    raise TypeError("level must be an integer")
+TypeError: level must be an integer
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 11:53:31] "[35m[1mGET /api/scholar/v1/soundid(d5d68b5b-5288-407e-bff4-666bb176dcd4) HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [10/Oct/2022 12:11:31] "[33mGET / HTTP/1.1[0m" 404 -
