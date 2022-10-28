@@ -22,6 +22,6 @@ export async function getCourseDetail(
     console.log(err)
   })
   coursedetails = res?.data.data[0].course_details
-  course = res?.data.data
+  course = res?.data.data[0]
   return { course, coursedetails }
 }

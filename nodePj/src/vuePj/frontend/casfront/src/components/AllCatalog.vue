@@ -3,7 +3,7 @@
     <div class="course-item">
       <q-item class="catalog" clickable v-ripple dense @click="openDropdown">
         <q-item-section avatar>
-          <q-icon name="today" />
+          <q-icon name="today" color="blue" />
         </q-item-section>
         <q-item-section>
           <AllSection name="Course">Course</AllSection>
@@ -18,7 +18,7 @@
       </q-item>
       <q-slide-transition>
         <div v-show="dropped">
-          <q-input dense outlined v-model="search" class="q-pl-sm q-pr-sm q-pb-sm q-pt-sm" label="Search Item"
+          <q-input dense outlined v-model="search" class="q-ml-sm q-mr-md q-pb-sm q-pt-sm" label="Search Item"
             @click="searchActive = true">
             <template v-slot:append>
               <q-icon v-if="search === ''" name="search" />
@@ -49,14 +49,8 @@ export default defineComponent({
     AllSection,
     CourseCatalog,
   },
-  setup() {
-    const courses: Ref<Array<Course>> = ref([])
-    /* courses.value.push({ code: "AB1111", course_id: 12, dept: "TEST", subject_area: "TEST", website: "" })
-    courses.value.push({ code: "AB1112", course_id: 13, dept: "TEST", subject_area: "TEST", website: "" })
-    courses.value.push({ code: "AB1113", course_id: 14, dept: "TEST", subject_area: "TEST", website: "" }) */
-    getCourse().then(res => courses.value = res)
-    console.log(courses)
-
+  setup(props) {
+    const courses: Ref<Array<Course>> = ref(props.items ?? [])
     const dropped: Ref<boolean> = ref(false)
     const searchActive: Ref<boolean> = ref(false)
     const search: Ref<string> = ref("")
@@ -75,6 +69,9 @@ export default defineComponent({
     },
     targetItem: {
       type: String,
+    },
+    items: {
+      type: Array<Course>
     }
   },
   methods: {
@@ -88,6 +85,12 @@ export default defineComponent({
     dropstyle() {
       return { display: (this.dropped || !this.expanded) ? "None" : "block" }
     }
+  },
+  watch: {
+    items: function (newVal) {
+      this.courses = newVal
+      console.log("triggered")
+    }
   }
 })
 </script>
@@ -99,6 +102,10 @@ export default defineComponent({
     height: 100
     opacity: 1
     animation: move-the-object 0.3s
+
+    .course-list-item
+      padding-left: 5px
+      padding-top: 5px
 
     .course-list-item:hover
       background-color: #ccc

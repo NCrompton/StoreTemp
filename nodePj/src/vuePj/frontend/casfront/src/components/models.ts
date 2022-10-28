@@ -11,8 +11,8 @@ export interface Course {
   course_id: number
   code: string
   dept: string
-  website: string
-  subject_area: string
+  website?: string
+  subject_area?: string
 }
 
 export interface CourseDetail {

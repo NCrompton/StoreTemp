@@ -1,0 +1,9 @@
+//send an English SMS to a list of telephone numner 
+//send/<message>/<no1%20no2%20no3>
+GET http://localhost:8080/send/Hi%20How%20are%20you%20today%3F/12345678%2023456789%2011223344 HTTP/1.1
+//this request send a English SMS message of "Hi How are you today?" to a list of phone number [12345678, 23456789. 11223344]
+
+//send a Chinese SMS to a list of telephone numbers
+//send/chinese/<message>/<no1%20no2%20no3>
+//currently not available due to soap request issues
+GET http://localhost:8080/send/chinese/Hi%20How%20are%20you%20today%3F/12345678%2023456789%2011223344 HTTP/1.1
