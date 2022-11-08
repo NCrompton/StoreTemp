@@ -5,6 +5,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Collections;
 import java.util.Map;
@@ -25,6 +26,9 @@ public class SMSController {
     @Value("${isTest}")
     boolean isTest;
 
+    @Value("${token}")
+    String token;
+
     @Autowired
     Properties prop;
 
@@ -33,9 +37,19 @@ public class SMSController {
         return "index";
     }
 
+    public Boolean authorizationCheck(String authToken) {
+        return (authToken.equals("Bearer " + token) && authToken != null);
+    }
+
     @GetMapping(value = "/send/{content}/{phoneNosParam}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map SendSms(@RequestBody String request, @PathVariable String content,
+    public Map SendSms(@RequestHeader Map<String, String> header, @RequestBody String request,
+            @PathVariable String content,
             @PathVariable String phoneNosParam) {
+
+        if (!header.containsKey("authorization"))
+            return Collections.singletonMap("Error", "Authorization Error");
+        if (!authorizationCheck(header.get("authorization")))
+            return Collections.singletonMap("Error", "Authorization Error");
 
         Jaxb2Marshaller marshaller = SmsConfiguration.marshaller();
         String[] phoneNos = phoneNosParam.split(" ");
@@ -47,8 +61,14 @@ public class SMSController {
     }
 
     @GetMapping(value = "/send/chinese/{content}/{phoneNosParam}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map SendSmsChi(@RequestBody String request, @PathVariable String content,
+    public Map SendSmsChi(@RequestHeader Map<String, String> header, @RequestBody String request,
+            @PathVariable String content,
             @PathVariable String phoneNosParam) {
+
+        if (!header.containsKey("authorization"))
+            return Collections.singletonMap("Error", "Authorization Error");
+        if (!authorizationCheck(header.get("authorization")))
+            return Collections.singletonMap("Error", "Authorization Error");
 
         Jaxb2Marshaller marshaller = SmsConfiguration.marshaller();
         String[] phoneNos = phoneNosParam.split(" ");

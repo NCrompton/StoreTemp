@@ -31,6 +31,7 @@ def gateway():
 @app.route("/api/scholar/v1/<paperId>", methods=['GET'])
 def api_scholar(paperId):
     url = f"https://scholars.cityu.edu.hk/en/publications/{paperId}.html"
+    https://scholars.cityu.edu.hk/en/publications/publication(ea6cf6b2-006a-47c7-9d1d-5abcb746072c).html
     logging.info("%s is being called", url)
     orcid = None
     if request.is_json: 

@@ -49,3 +49,26 @@ def voivoi(str):
     print(f"hello world {str}")
 
 voivoi("guten tag")("Bonjour")
+
+def checkFunc(addon:str):
+    def increment(num:int):
+        w:str = addon * num
+        def printMeta(func):
+            print(f"you are running function {'{'}{func.__name__}{'}'}")
+            def runFunc(*arg):
+                txt = w + func(*arg)
+                print(txt)
+                return txt
+            return runFunc
+        return printMeta
+    print(addon)
+    return increment
+
+@checkFunc("NEW")(12)
+def first(word:str) -> str:
+    word = word.capitalize()
+    print(f"{word} is the key")
+    return f"{word} is the key"
+
+first("Whole")
+

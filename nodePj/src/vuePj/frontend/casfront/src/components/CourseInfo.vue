@@ -33,6 +33,7 @@
       </div>
     </div>
     is the course
+    <Graph />
   </div>
 </template>
 <script lang="ts">
@@ -40,10 +41,11 @@ import { defineComponent, ref, Ref } from 'vue'
 import { CourseDetail, Course } from './models';
 import { getCourseDetail } from 'src/api/courseDetail'
 import CourseDetailInfo from './CourseDetailInfo.vue'
+import Graph from './Graph.vue'
 
 export default defineComponent({
   name: "CourseInfo",
-  components: { CourseDetailInfo },
+  components: { CourseDetailInfo, Graph },
   setup(props) {
     const course_details: Ref<CourseDetail[]> = ref([])
     const courseR = ref()

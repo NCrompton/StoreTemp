@@ -16,7 +16,6 @@ public class SmsInterceptor implements ClientInterceptor {
 
     @Override
     public boolean handleRequest(MessageContext messageContext) throws WebServiceClientException {
-
         return true;
     }
 

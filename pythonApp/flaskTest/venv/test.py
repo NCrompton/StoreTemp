@@ -2,6 +2,7 @@ from glob import escape
 from flask import Flask, render_template, request, make_response
 import json
 import scrap
+from base64 import b64encode, b64decode 
 
 app = Flask(__name__)
 
@@ -56,4 +57,13 @@ def api_orcid(orcid):
     output = scrap.create_orcid(orcid)
     resp = make_response(output)
     resp.content_type = "application/json"
+    return resp
+
+@app.route("/auth/test", methods=["GET"])
+def auth_handler():
+    print(request.headers, end="\n")
+    auth = b64encode(b"username:password").decode("ascii")
+    result = b64decode(request.headers["Authorization"].replace("Basic ", "")).decode('utf-8')
+    print(f"the password is ${result}", end="\n")
+    resp = make_response({"status": "200", "error": None})
     return resp

@@ -22,6 +22,8 @@ public class SmsConfiguration {
     client.setDefaultUri("https://cap.cityu.edu.hk/sms/cityusms.asmx");
     client.setMarshaller(marshaller);
     client.setUnmarshaller(marshaller);
+    SmsInterceptor[] interceptor = { new SmsInterceptor() };
+    client.setInterceptors(interceptor);
     return client;
   }
 

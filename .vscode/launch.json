@@ -3,6 +3,26 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "anno.Main",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "java.annotest.Main"
+    },
+    {
+      "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": ""
+    },
+    {
+      "type": "java",
       "name": "Launch SmsApplication",
       "request": "launch",
       "mainClass": "com.example.sms.SmsApplication",
@@ -26,7 +46,9 @@
       "name": "Launch nodeJS Program",
       "program": "${workspaceFolder}/login.js",
       "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "type": "node"
     },
     {
@@ -34,7 +56,9 @@
       "port": 3000,
       "processId": "${command:PickProcess}",
       "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "type": "node"
     },
     {
