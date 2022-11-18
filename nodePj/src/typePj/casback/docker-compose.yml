@@ -1,0 +1,9 @@
+services:
+  web: 
+    build: ./
+    container_name: 
+      cas_back
+    hostname:
+      cas_back
+    ports: 
+      - "3002:3002/tcp"

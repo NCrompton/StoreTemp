@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+      target: 'dev'
+    container_name:
+      cas_front
+    hostname:
+      cas_front
+    ports:
+      - "4000:4000/tcp"
